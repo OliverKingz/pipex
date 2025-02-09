@@ -3,10 +3,14 @@
 This project was designed to enhance skills in **process management**, **file handling**, and **C programming**.
 
 Keywords  
-- **Pipes**: No explanation.  
-- **Process Management**: No explanation.  
-- **File Descriptors**: No explanation.  
-- **Error Handling**: No explanation.  
+- **Pipes** 
+- **Process Management**
+- **File Descriptors**
+- **Error Handling**
+- **Input/Output Redirection**
+- **Shell Commands**
+- **Forking**
+- **System Calls**
 
 ---
 
