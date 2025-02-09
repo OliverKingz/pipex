@@ -43,19 +43,6 @@ This behaves the same as the following shell command:
 < infile ls -l | wc -l > outfile
 ```
 
-### Bonus Usage  
-For multiple pipes:  
-```bash
-./pipex infile "cmd1" "cmd2" "cmd3" outfile
-```  
-
-For here document:  
-```bash
-./pipex here_doc LIMITER "cmd" "cmd1" outfile
-```  
-
-### Example Inputs and Outputs
-
 | **Input Command**                                      | **Description**                                                                 | **Expected Output**                                                                 |
 |--------------------------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | `./pipex infile "ls -l" "wc -l" outfile`               | Lists files in `infile` directory and counts lines.                             | Number of lines from `ls -l` written to `outfile`.                                 |
@@ -69,16 +56,21 @@ For here document:
 | `./pipex infile "head -n 5" "tail -n 1" outfile`       | Extracts the first 5 lines of `infile` and then the last line of those 5.       | The 5th line of `infile` written to `outfile`.                                     |
 | `./pipex infile "tr ' ' '\n'" "sort" outfile`          | Splits words in `infile` by spaces and sorts them.                              | Sorted list of words written to `outfile`.                                         |
 
----
+### Bonus Usage  
+For multiple pipes:  
+```bash
+./pipex infile "cmd1" "cmd2" "cmd3" outfile
+```  
 
-### Bonus Examples (if implemented)
+For here document:  
+```bash
+./pipex here_doc LIMITER "cmd" "cmd1" outfile
+```  
 
 | **Input Command**                                      | **Description**                                                                 | **Expected Output**                                                                 |
 |--------------------------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | `./pipex infile "cmd1" "cmd2" "cmd3" outfile`          | Executes three commands in a pipeline.                                          | Output of `cmd3` written to `outfile`.                                             |
 | `./pipex here_doc LIMITER "cmd" "cmd1" outfile`        | Uses `here_doc` to read input until `LIMITER` is found, then processes it.      | Output of `cmd1` appended to `outfile`.                                            |
-
----
 
 ### Error Handling Examples
 
