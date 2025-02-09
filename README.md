@@ -22,8 +22,6 @@ The `pipex` project is a C program that simulates the behavior of shell pipes (`
 - **Basic Command Support**: Support for shell commands with arguments.  
 - **Memory Management**: clean and efficient.
 
----
-
 ## Bonus Features  
 - **Multiple Pipes**: Handle more than two commands in a pipeline (e.g., `cmd1 | cmd2 | cmd3`).  
 - **Here Document**: Support for `<<` and `>>` redirection when the first parameter is `here_doc`.  
