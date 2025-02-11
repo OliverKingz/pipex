@@ -14,6 +14,23 @@ Keywords
 
 ---
 
+## Index
+
+- [Overview](#overview)
+- [Features](#features)
+- [Bonus Features](#bonus-features)
+- [Functions Allowed](#functions-allowed)
+- [How It Works](#how-it-works)
+  - [Example Usage](#example-usage)
+  - [Bonus Usage](#bonus-usage)
+  - [Error Handling Examples](#error-handling-examples)
+- [What I Learned](#what-i-learned)
+- [Installation](#installation)
+- [Author](#author)
+- [Acknowledgments](#acknowledgments)
+
+---
+
 ## Overview  
 The `pipex` project is a C program that simulates the behavior of shell pipes (`|`). It takes four arguments: two file names and two shell commands. The program executes the commands in a pipeline, redirecting the input and output as specified. This project was created to deepen understanding of Unix process management, file handling, and error handling in C.  
 
@@ -30,6 +47,47 @@ The `pipex` project is a C program that simulates the behavior of shell pipes (`
 - **Multiple Pipes**: Handle more than two commands in a pipeline (e.g., `cmd1 | cmd2 | cmd3`).  
 - **Here Document**: Support for `<<` and `>>` redirection when the first parameter is `here_doc`.  
 - **Advanced Error Handling**: Improved error messages and handling for edge cases.  
+
+---
+
+## Functions Allowed
+
+The following functions are authorized for use in the `pipex` project. Each function is briefly described to explain its purpose and relevance to the project.
+
+### 1. **File Handling**
+- **`open()`**: Opens a file and returns a file descriptor. Used to read from or write to files.
+- **`close()`**: Closes a file descriptor, freeing up resources.
+- **`unlink()`**: Deletes a file from the filesystem. Useful for cleaning up temporary files.
+
+### 2. **Process Management**
+- **`fork()`**: Creates a new process by duplicating the calling process. Used to execute commands in child processes.
+- **`execve()`**: Replaces the current process image with a new one. Used to execute shell commands.
+- **`wait()`**: Waits for a child process to terminate. Useful for synchronizing parent and child processes.
+- **`waitpid()`**: Waits for a specific child process to terminate. Provides more control than `wait()`.
+
+### 3. **Pipes**
+- **`pipe()`**: Creates a pipe, which is a unidirectional data channel for inter-process communication. Used to connect commands in a pipeline.
+- **`dup()`**: Duplicates a file descriptor. Useful for redirecting input/output.
+- **`dup2()`**: Duplicates a file descriptor and assigns it to a specified file descriptor number. Used to redirect input/output to/from pipes.
+
+### 4. **Memory Management**
+- **`malloc()`**: Allocates memory on the heap. Used for dynamic memory allocation.
+- **`free()`**: Deallocates memory previously allocated by `malloc()`. Prevents memory leaks.
+
+### 5. **Error Handling**
+- **`perror()`**: Prints an error message to `stderr` based on the current value of `errno`. Useful for debugging.
+- **`strerror()`**: Returns a string describing the error code stored in `errno`. Useful for generating custom error messages.
+
+### 6. **Input/Output**
+- **`read()`**: Reads data from a file descriptor into a buffer. Used to read input from files or pipes.
+- **`write()`**: Writes data from a buffer to a file descriptor. Used to write output to files or pipes.
+
+### 7. **Program Control**
+- **`exit()`**: Terminates the program with a specified status code. Used to handle errors or normal termination.
+- **`access()`**: Checks if a file exists or if the program has permission to access it. Useful for error handling.
+
+### 8. **Custom Functions**
+- **`ft_printf()`**: A custom implementation of `printf` (if you have coded one). Used for formatted output.
 
 ---
 
@@ -95,7 +153,7 @@ For here document:
 
 ## Installation  
 ### Requirements  
-- A C compiler (e.g., `gcc`).  
+- A C compiler
 - Standard libraries.  
 
 ### How to Run  
