@@ -6,18 +6,18 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/12 22:21:26 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/12 22:25:08 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "libft.h"
-# include <sys/wait.h> // To use wait, waitpid, 
+#include "libft.h"
+#include <sys/wait.h> // To use wait, waitpid,
 /*
 Libraries already included at libft.
-# include <stdio.h>  // To use printf, perror, strerror, 
-# include <stdlib.h> // To use malloc, free, exit. Also size_t def.
-# include <unistd.h> // To use write, open, read, close, 
-					 // fork, execve, pipe, dup, dup2, access, unlink
+#include <stdio.h>  // To use printf, perror, strerror,
+#include <stdlib.h> // To use malloc, free, exit. Also size_t def.
+// To use write, open, read, close, fork, execve, pipe, dup, dup2, access, unlink
+#include <unistd.h> 
 */
 
 int		open(const char *__file, int __oflag, ...);
@@ -60,7 +60,7 @@ Provides more control than wait().
 - pipe(): Creates a pipe, which is a unidirectional data channel for
 inter-process communication. Used to connect commands in a pipeline.
 - dup(): Duplicates a file descriptor. Useful for redirecting input/output.
-- dup2(): Duplicates a file descriptor and assigns it to a specified fd number. 
+- dup2(): Duplicates a file descriptor and assigns it to a specified fd number.
 Used to redirect input/output to/from pipes.
 
 4. Memory Management
@@ -70,17 +70,17 @@ Used to redirect input/output to/from pipes.
 5. Error Handling
 - perror(): Prints an error message to stderr based on the current value of errno
 Useful for debugging.
-- strerror(): Returns a string describing the error code stored in errno. 
+- strerror(): Returns a string describing the error code stored in errno.
 Useful for generating custom error messages.
 
 6. Input/Output
-- read(): Reads data from a file descriptor into a buffer. 
+- read(): Reads data from a file descriptor into a buffer.
 Used to read input from files or pipes.
-- write(): Writes data from a buffer to a file descriptor. 
+- write(): Writes data from a buffer to a file descriptor.
 Used to write output to files or pipes.
 
 7. Program Control
-- exit(): Terminates the program with a specified status code. 
+- exit(): Terminates the program with a specified status code.
 Used to handle errors or normal termination.
 - access(): Checks if a file exists or if the program has permission to access it
 Useful for error handling.
