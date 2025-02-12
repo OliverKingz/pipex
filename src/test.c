@@ -6,11 +6,29 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:30:16 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/11 23:59:02 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/12 22:17:02 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int		open(const char *__file, int __oflag, ...);
+int		close(int __fd);
+int		unlink(const char *__name);
+pid_t	fork(void);
+pid_t	wait(<error type>);
+pid_t	waitpid(pid_t __pid, int *__stat_loc, int __options);
+int		pipe(int *__pipedes);
+int		dup(int __fd);
+int		dup2(int __fd, int __fd2);
+void	*malloc(size_t __size);
+void	free(void *__ptr);
+void	perror(const char *__s);
+int		strerror(<error type>);
+ssize_t	read(int __fd, void *__buf, size_t __nbytes);
+ssize_t	write(int __fd, const void *__buf, size_t __n);
+void	exit(int __status);
+int		access(const char *__name, int __type);
 
 int	main(void)
 {
