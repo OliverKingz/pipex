@@ -6,8 +6,13 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/11 23:54:37 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:59:04 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "libft.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
