@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/11 23:53:48 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/12 20:27:24 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,17 +90,20 @@ all: libft $(NAME)
 # Rule to create the program
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
-	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Compilation success\t✅$(NC)\n"
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Compilation success\t✅$(NC)\n"
 	@echo "─────────────────────────────────────────────────────$(BY)"
-	@echo " pipex by ozamora-$(NC)";
-	@echo "\n─────────────────────────────────────────────────────"
+	@echo "           ▗▄▄▖▗▄▄▄▖▗▄▄▖ ▗▄▄▄▖▗▖  ▗▖";
+	@echo "           ▐▌ ▐▌ █  ▐▌ ▐▌▐▌    ▝▚▞▘ ";
+	@echo "           ▐▛▀▘  █  ▐▛▀▘ ▐▛▀▀▘  ▐▌  ";
+	@echo "           ▐▌  ▗▄█▄▖▐▌   ▐▙▄▄▖▗▞▘▝▚▖ by ozamora-$(NC)";
+	@echo "─────────────────────────────────────────────────────"
 
 # Rule to compile object files from source files
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(NC)$<\r"
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(NC)$<\r"
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 # Rule to make the library Libft
@@ -113,14 +116,14 @@ clean:
 	@rm -rf $(OBJ_DIR)*.o $(OBJ_DIR)*.d $(OBJ_DIR)
 	@rm -rf $(BUILD_MODE_FILE)
 	@$(MAKE) clean -sC $(LIBFT_DIR)
-	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Object files cleaned\t❎$(NC)\n"
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Object files cleaned\t❎$(NC)\n"
 
 # Rule to clean generated files and the executablle
 fclean: 
 	@$(MAKE) clean > /dev/null
 	@$(MAKE) fclean -sC $(LIBFT_DIR)
 	@rm -rf $(NAME) $(BONUS_NAME)
-	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Exe and objects cleaned\t❎$(NC)\n"
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Exe and objects cleaned\t❎$(NC)\n"
 
 # Rule to recompile from zero. 
 re: fclean all
@@ -131,7 +134,7 @@ re: fclean all
 bonus: libft $(BONUS_NAME)
 $(BONUS_NAME): $(OBJS_BONUS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS_BONUS) $(LDFLAGS) -o $(BONUS_NAME) 
-	@printf "%b" "$(CL) -> $(BW)[$(BONUS_NAME)]:\t\t$(BG)Compilation success\t✅$(NC)\n"
+	@printf "%b" "$(CL) -> $(BW)[$(BONUS_NAME)]:\t$(BG)Compilation success\t✅$(NC)\n"
 
 # **************************************************************************** #
 # NORM AND DEBUG RULES
@@ -209,6 +212,6 @@ info:
 
 -include $(DEPS) $(DEPS_BONUS)
 .PHONY: all clean fclean re bonus norm debug valgrind show info
-.DEFAULT_GOAL := debug
+.DEFAULT_GOAL := all
 
 # **************************************************************************** #
