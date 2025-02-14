@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/12 22:25:08 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/14 22:06:11 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@ Libraries already included at libft.
 // To use write, open, read, close, fork, execve, pipe, dup, dup2, access, unlink
 #include <unistd.h> 
 */
+typedef struct s_pipex
+{
+	int	infile;
+	int	outfile;
+	int	fd[2];
+}		t_pipex;
 
 int		open(const char *__file, int __oflag, ...);
 int		close(int __fd);
@@ -39,6 +45,9 @@ void	exit(int __status);
 int		access(const char *__name, int __type);
 
 void	my_perr(const char *msg, bool should_exit);
+void	execute_command(char *cmd, int input_fd, int output_fd);
+void	check_files(int argc, char *argv[]);
+void	create_pipes(t_pipex *pipex)
 
 /*
 1. File Handling

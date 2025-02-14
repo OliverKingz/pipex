@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/12 20:27:24 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/14 21:24:32 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -163,7 +163,10 @@ valgrind:
 	@$(MAKE) bonus -s VALGRIND=1
 	@$(MAKE) -s VALGRIND=1
 	@echo " -> $(BW)[Valgrind]:\t\t$(BB)Valgrind mode enabled\t🟦$(NC)"
-	-@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
+	-@if [ ! -z "$(ARGS)" ]; then \
+		valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --track-fds=yes \
+		./$(NAME) $(ARGS); \
+	fi
 
 # **************************************************************************** #
 # ADDITIONAL RULES
