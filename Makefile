@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/14 21:24:32 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/17 17:32:31 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ BONUS_NAME	:= pipex_bonus
 # **************************************************************************** #
 # FILES
 SRC_COMMON_FILES	:= $(wildcard $(SRC_DIR)*.c)
+#SRC_COMMON_FILES	:= test/env.c
 SRC_FILES			:= $(SRC_COMMON_FILES)
 SRC_BONUS_FILES		:= $(SRC_COMMON_FILES)
 
