@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:28:32 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/18 19:59:27 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 21:53:58 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,81 @@
 
 void	execute_command(char *command, char *envp[])
 {
-	char	**cmd_token;
-	char	*cmd_path;
+	char	**tokenized_cmd;
+	char	*path_cmd;
 
-	cmd_token = ft_split(command, ' ');
-	cmd_path = check_addpath_cmd(cmd_token[0], envp);
-	execve(cmd_path, cmd_token, envp);
- 	perror("execve");
-	my_free2d((void **)cmd_token);
-	free(cmd_path);
-	exit(EXIT_FAILURE);
+	tokenized_cmd = ft_split(command, ' ');
+	if (!tokenized_cmd)
+		my_perr("ft_split", true);
+	path_cmd = check_addpath_cmd(tokenized_cmd[0], envp);
+	if (path_cmd == NULL)
+		my_free2d((void **)tokenized_cmd);
+	else
+	{
+		if (execve(path_cmd, tokenized_cmd, envp) == -1)
+		{
+			my_free2d((void **)tokenized_cmd);
+			my_free(path_cmd);
+			my_perr("execve", true);
+		}
+		my_free2d((void **)tokenized_cmd);
+		my_free(path_cmd);
+	}
 }
-
 
 char	*check_addpath_cmd(char *command, char *envp[])
 {
-	char *path;
-	char *path_dir;
-	char *cmd_path;
-	int	i;
+	char	*path;
+	char	*path_cmd;
 
 	path = my_getpath(envp);
+	path_cmd = my_addpath_cmd(command, path);
+	if (path_cmd == NULL)
+	{
+		ft_putstr_fd(command, 2);
+		ft_putstr_fd(": command not found", 2);
+	}
+	return (path_cmd);
+}
+
+char	*my_addpath_cmd(char *command, char *path)
+{
+	char	*path_dir;
+	char	*path_cmd;
+
 	path_dir = ft_strtok(path, ":");
-	cmd_path = NULL;
-	i = 0;
+	path_cmd = NULL;
 	while (path_dir != NULL)
 	{
-		cmd_path = ft_strjoin_char(path_dir, command, '/');
-		if (access(cmd_path, F_OK | X_OK) != -1)
-			(free(cmd_path), my_perr(command, true));
-		else
+		path_cmd = ft_strjoin_char(path_dir, command, '/');
+		if (!path_cmd)
+			(perror("malloc"), exit(EXIT_FAILURE));
+		if (access(path_cmd, F_OK | X_OK) == 0)
 			break ;
-		path_dir = ft_strtok(NULL, ":");
+		else
+		{
+			my_free(path_cmd);
+			path_dir = ft_strtok(NULL, ":");
+		}
 	}
-	free(path);
-	free(path_dir);
-	return (cmd_path);
+	return (path_cmd);
 }
 
 char	*my_getpath(char *envp[])
 {
-	char *path;
-	int	i;
+	char	*path;
+	int		i;
 
 	path = NULL;
 	i = 0;
 	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
 			path = envp[i] + 5;
+			break ;
+		}
 		i++;
 	}
-	return(path);
+	return (path);
 }

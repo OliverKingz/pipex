@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 21:02:41 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/18 17:12:10 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 22:11:55 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,26 @@ void	my_free2d(void **array2d)
 	i = 0;
 	while (array2d[i] != NULL)
 	{
-		free(array2d[i]);
+		my_free(array2d[i]);
 		i++;
 	}
-	free(array2d);
+	my_free(array2d);
+}
+
+void	my_free(void *allocatedMemory)
+{
+	if (allocatedMemory != NULL)
+	{
+		free(allocatedMemory);
+		allocatedMemory = NULL;
+	}
+}
+
+void	init_struct(t_pipex *pipex)
+{
+	pipex->infile = -1;
+	pipex->outfile = -1;
+	pipex->pd[0] = -1;
+	pipex->pd[1] = -1;
+	pipex->num_cmds = -1;
 }

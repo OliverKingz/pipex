@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:35:09 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/18 20:08:56 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 22:35:32 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	main(int argc, char *argv[], char *envp[])
 	int		i;
 
 	if (argc != 5)
-		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile", 2), exit(1);
+		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2), exit(1);
 	check_args(argv);
-	check_open_files(argc, argv, &pipex);
-	pipex.num_cmds = argc - 2;
+	init_struct(&pipex);
+	pipex.num_cmds = argc - 3;
 	create_pipes(&pipex);
 	i = 0;
 	while (i < pipex.num_cmds)
@@ -49,6 +49,14 @@ pid_t	first_execution(int index, char *argv[], char *envp[], t_pipex *pipex)
 		(close(pipex->pd[0]), close(pipex->pd[1]), my_perr("fork", true));
 	if (pid == 0)
 	{
+		pipex->infile = open(argv[1], O_RDONLY);
+		if (pipex->infile == -1 || access(argv[1], F_OK | R_OK) == -1)
+		{
+			my_perr(argv[1], false);
+			pipex->infile = open("/dev/null", O_RDONLY);
+			if (pipex->infile == -1)
+				my_perr("/dev/null", true);
+		}
 		close(pipex->pd[0]);
 		if (dup2(pipex->infile, 0) == -1)
 			(close(pipex->infile), close(pipex->pd[1]), my_perr("dup2", true));
@@ -69,6 +77,9 @@ pid_t	last_execution(int index, char *argv[], char *envp[], t_pipex *pipex)
 		(close(pipex->pd[0]), close(pipex->pd[1]), my_perr("fork", true));
 	if (pid == 0)
 	{
+		pipex->outfile = open(argv[index + 3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (pipex->outfile == -1)
+			my_perr(argv[index + 3], true);
 		close(pipex->pd[1]);
 		if (dup2(pipex->pd[0], 0) == -1)
 			(close(pipex->outfile), close(pipex->pd[0]), my_perr("dup2", true));
@@ -88,24 +99,24 @@ void	check_args(char *argv[])
 	while (argv[i] != NULL)
 	{
 		if (ft_strlen(argv[i]) == 0)
-			ft_putstr_fd("Error: empty arg", 2), exit(1);
+			ft_putstr_fd("Error: empty arg\n", 2), exit(1);
 		i++;
 	}
 }
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 {
-	int	infile;
-	int	outfile;
-
-	infile = open(argv[1], O_RDONLY, 644);
-	if (infile == -1 || access(argv[1], F_OK | R_OK) == -1)
-		my_perr("No such file or directory", false);
-	outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 644);
-	if (outfile == -1)
-		my_perr("output open check", true);
-	pipex->infile = infile;
-	pipex->outfile = outfile;
+	pipex->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipex->outfile == -1)
+		my_perr(argv[argc - 1], true);
+	pipex->infile = open(argv[1], O_RDONLY);
+	if (pipex->infile == -1 || access(argv[1], F_OK | R_OK) == -1)
+	{
+		my_perr(argv[1], false);
+		pipex->infile = open("/dev/null", O_RDONLY);
+		if (pipex->infile == -1)
+			my_perr("/dev/null", true);
+	}
 }
 
 void	create_pipes(t_pipex *pipex)
