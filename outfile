@@ -1,1 +1,16 @@
-0
+empty
+inc
+infile
+lib
+LICENSE
+Makefile
+obj
+outfile
+outfile_bash
+outfile_sh
+outfile_zsh
+pipex
+pipex_bonus
+README.md
+src
+test
