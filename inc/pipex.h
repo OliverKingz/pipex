@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/18 17:26:09 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 20:00:17 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,17 @@ typedef struct s_pipex
 {
 	int	infile;
 	int	outfile;
-	int	fd[2];
+	int	pd[2];
+	int	num_cmds;
 }		t_pipex;
 
-//void	execute_command(char *cmd, int input_fd, int output_fd, char *envp[]);
-void	execute_command(int index, char *argv[], char *envp[], t_pipex *pipex);
+pid_t	first_execution(int index, char *argv[], char *envp[], t_pipex *pipex);
+pid_t	last_execution(int index, char *argv[], char *envp[], t_pipex *pipex);
+void	execute_command(char *command, char *envp[]);
 char	*check_addpath_cmd(char *command, char *envp[]);
 char	*my_getpath(char *envp[]);
 
-void	check_args(int argc, char *argv[]);
+void	check_args(char *argv[]);
 void	check_open_files(int argc, char *argv[], t_pipex *pipex);
 void	create_pipes(t_pipex *pipex);
 
@@ -83,3 +85,48 @@ Used to handle errors or normal termination.
 - access(): Checks if a file exists or if the program has permission to access it
 Useful for error handling.
  */
+/*
+void execute_commands(t_pipex *pipex) {
+    for (int i = 0; i < pipex->num_cmds; i++) {
+        pipex->pids[i] = fork();
+        if (pipex->pids[i] == 0) {
+            // Proceso hijo
+            if (i == 0) {
+                // Primer comando: redirigir stdin desde infile
+                dup2(pipex->infile, 0);
+            } else {
+                // Comandos intermedios: redirigir stdin desde el pipe anterior
+                dup2(pipex->pipes[i - 1][0], 0);
+            }
+
+            if (i == pipex->num_cmds - 1) {
+                // Último comando: redirigir stdout a outfile
+                dup2(pipex->outfile, 1);
+            } else {
+                // Comandos intermedios: redirigir stdout al pipe siguiente
+                dup2(pipex->pipes[i][1], 1);
+            }
+
+            // Cerrar todos los pipes
+            for (int j = 0; j < pipex->num_cmds - 1; j++) {
+                close(pipex->pipes[j][0]);
+                close(pipex->pipes[j][1]);
+            }
+
+            // Ejecutar el comando
+            execve(pipex->cmds[i][0], pipex->cmds[i], environ);
+            perror("execve");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Proceso padre: cerrar todos los pipes y esperar a los hijos
+    for (int i = 0; i < pipex->num_cmds - 1; i++) {
+        close(pipex->pipes[i][0]);
+        close(pipex->pipes[i][1]);
+    }
+    for (int i = 0; i < pipex->num_cmds; i++) {
+        waitpid(pipex->pids[i], NULL, 0);
+    }
+}
+*/
