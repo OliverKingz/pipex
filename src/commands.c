@@ -6,45 +6,67 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:28:32 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/17 18:32:57 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:36:30 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	execute_command(char *cmd, int input_fd, int output_fd, char *envp[])
+// void	execute_command(char *cmd, int input_fd, int output_fd, char *envp[])
+// {
+// 	if (dup2(input_fd, 0) == -1 || dup2(output_fd, 1) == -1)
+// 		my_perr("dup2", true);
+// 	close(input_fd);
+// 	close(output_fd);
+// 	execve(cmd, cmd, envp);
+// 	perror("execve");
+// 	exit(EXIT_FAILURE);
+// }
+
+void	execute_command(int index, char *argv[], char *envp[], t_pipex *pipex)
 {
-	if (dup2(input_fd, 0) == -1 || dup2(output_fd, 1) == -1)
-		my_perr("dup2", true);
-	close(input_fd);
-	close(output_fd);
-	execve(cmd, cmd, envp);
-	perror("execlp");
+	char	**cmd_token;
+	char	*cmd_path;
+
+	cmd_token = ft_split(argv[index], ' ');
+	cmd_path = check_addpath_cmd(cmd_token[0]);
+	execve(cmd_path, cmd_token, envp);
+ 	perror("execve");
+	my_free2d(cmd_token);
+	free(cmd_path);
 	exit(EXIT_FAILURE);
 }
 
-void	check_open_files(int argc, char *argv[], t_pipex *pipex)
-{
-	int	infile;
-	int	outfile;
 
-	infile = open(argv[1], O_RDONLY, 644);
-	if (infile == -1 || access(argv[1], R_OK) == -1)
-		my_perr("input access check", false);
-	outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 644);
-	if (outfile == -1)
-		my_perr("output open check", true);
-	pipex->infile = infile;
-	pipex->outfile = outfile;
+char	*check_addpath_cmd(char *command, char *envp[])
+{
+	char *path;
+	char *path_dir;
+	int	i;
+
+	path = my_getpath(envp);
+	path_dir = ft_strtok(path, ":");
+	i = 0;
+	while (path_dir != NULL)
+	{
+		path_dir = ft_strtok(path, ":");
+	}
+	free(path);
+	free(path_dir);
 }
 
-void	create_pipes(t_pipex *pipex)
+char	*my_getpath(char *envp[])
 {
-	if (pipe(pipex->fd) == -1)
-		my_perr("pipe", true);
-}
+	char *path;
+	int	i;
 
-void	check_commands(int argc, char *argv[], char *envp[])
-{
-	
+	path = NULL;
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			path = envp[i] + 5;
+		i++;
+	}
+	return(path);
 }

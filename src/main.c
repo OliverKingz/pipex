@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:35:09 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/17 18:12:56 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:25:30 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,27 @@ void	check_args(int argc, char *argv[])
 			ft_putstr_fd("Error: empty arg", 2), exit(1);
 		i++;
 	}
+}
+
+void	check_open_files(int argc, char *argv[], t_pipex *pipex)
+{
+	int	infile;
+	int	outfile;
+
+	infile = open(argv[1], O_RDONLY, 644);
+	if (infile == -1 || access(argv[1], R_OK) == -1)
+		my_perr("input access check", false);
+	outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 644);
+	if (outfile == -1)
+		my_perr("output open check", true);
+	pipex->infile = infile;
+	pipex->outfile = outfile;
+}
+
+void	create_pipes(t_pipex *pipex)
+{
+	if (pipe(pipex->fd) == -1)
+		my_perr("pipe", true);
 }
 
 int	main(int argc, char *argv[], char *envp[])

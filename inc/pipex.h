@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/17 18:12:56 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:26:09 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,17 @@ typedef struct s_pipex
 	int	fd[2];
 }		t_pipex;
 
-void	execute_command(char *cmd, int input_fd, int output_fd, char *envp[]);
-void	check_open_files(int argc, char *argv[], t_pipex *pipex);
-void	check_commands(int argc, char *argv[], char *envp[]);
-void	create_pipes(t_pipex *pipex);
+//void	execute_command(char *cmd, int input_fd, int output_fd, char *envp[]);
+void	execute_command(int index, char *argv[], char *envp[], t_pipex *pipex);
+char	*check_addpath_cmd(char *command, char *envp[]);
+char	*my_getpath(char *envp[]);
 
 void	check_args(int argc, char *argv[]);
+void	check_open_files(int argc, char *argv[], t_pipex *pipex);
+void	create_pipes(t_pipex *pipex);
 
 void	my_perr(const char *msg, bool should_exit);
+void	my_free2d(void **array2d);
 
 /*
 1. File Handling
