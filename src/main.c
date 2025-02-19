@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:35:09 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/19 16:02:01 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:24:58 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int	main(int argc, char *argv[], char *envp[])
 	int		i;
 
 	if (argc != 5)
-		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2), exit(1);
+		(ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2), exit(1));
 	check_args(argv);
 	init_struct(&pipex);
 	pipex.num_cmds = argc - 3;
 	create_pipes(&pipex);
+	check_open_files(argc, argv, &pipex);
 	i = 0;
 	while (i < pipex.num_cmds)
 	{
@@ -37,11 +38,11 @@ int	main(int argc, char *argv[], char *envp[])
 	close(pipex.pd[1]);
 	waitpid(pid[0], NULL, 0);
 	waitpid(pid[1], NULL, 0);
-	// while (waitpid(-1, NULL, 0) > 0);
-	return (0); 
+	return (0);
 }
+// while (waitpid(-1, NULL, 0) > 0);
 
-pid_t	first_execution(int index, char *argv[], char *envp[], t_pipex *pipex)
+pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 {
 	pid_t	pid;
 
@@ -50,26 +51,18 @@ pid_t	first_execution(int index, char *argv[], char *envp[], t_pipex *pipex)
 		(close(pipex->pd[0]), close(pipex->pd[1]), my_perr("fork", true));
 	if (pid == 0)
 	{
-		pipex->infile = open(argv[1], O_RDONLY);
-		if (pipex->infile == -1 || access(argv[1], F_OK | R_OK) == -1)
-		{
-			my_perr(argv[1], false);
-			pipex->infile = open("/dev/null", O_RDONLY);
-			if (pipex->infile == -1)
-				my_perr("/dev/null", true);
-		}
 		close(pipex->pd[0]);
 		if (dup2(pipex->infile, 0) == -1)
 			(close(pipex->infile), close(pipex->pd[1]), my_perr("dup2", true));
 		if (dup2(pipex->pd[1], 1) == -1)
 			(close(pipex->infile), close(pipex->pd[1]), my_perr("dup2", true));
 		(close(pipex->infile), close(pipex->pd[1]));
-		execute_command(argv[index + 2], envp);
+		execute_command(argv[i + 2], envp);
 	}
 	return (pid);
 }
 
-pid_t	last_execution(int index, char *argv[], char *envp[], t_pipex *pipex)
+pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 {
 	pid_t	pid;
 
@@ -78,16 +71,13 @@ pid_t	last_execution(int index, char *argv[], char *envp[], t_pipex *pipex)
 		(close(pipex->pd[0]), close(pipex->pd[1]), my_perr("fork", true));
 	if (pid == 0)
 	{
-		pipex->outfile = open(argv[index + 3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (pipex->outfile == -1)
-			my_perr(argv[index + 3], true);
 		close(pipex->pd[1]);
 		if (dup2(pipex->pd[0], 0) == -1)
 			(close(pipex->outfile), close(pipex->pd[0]), my_perr("dup2", true));
 		if (dup2(pipex->outfile, 1) == -1)
 			(close(pipex->outfile), close(pipex->pd[0]), my_perr("dup2", true));
 		(close(pipex->outfile), close(pipex->pd[0]));
-		execute_command(argv[index + 2], envp);
+		execute_command(argv[i + 2], envp);
 	}
 	return (pid);
 }
@@ -100,7 +90,7 @@ void	check_args(char *argv[])
 	while (argv[i] != NULL)
 	{
 		if (ft_strlen(argv[i]) == 0)
-			ft_putstr_fd("Error: empty arg\n", 2), exit(1);
+			(ft_putstr_fd("Error: empty arg\n", 2), exit(1));
 		i++;
 	}
 }
