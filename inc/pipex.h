@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/18 22:40:07 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:39:48 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_pipex
 	int	num_cmds;
 }		t_pipex;
 
+int		main(int argc, char *argv[], char *envp[]);
 void	execute_command(char *command, char *envp[]);
 char	*check_addpath_cmd(char *command, char *envp[]);
 char	*my_getpath(char *envp[]);

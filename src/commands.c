@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:28:32 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/18 23:15:11 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:39:21 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,14 @@ void	execute_command(char *command, char *envp[])
 	if (!tokenized_cmd)
 		my_perr("ft_split", true);
 	path_cmd = check_addpath_cmd(tokenized_cmd[0], envp);
-	if (path_cmd == NULL)
-		my_free2d((void **)tokenized_cmd);
-	else
+	if (execve(path_cmd, tokenized_cmd, envp) == -1)
 	{
-		if (execve(path_cmd, tokenized_cmd, envp) == -1)
-		{
-			my_free2d((void **)tokenized_cmd);
-			my_perr("execve", true);
-		}
 		my_free2d((void **)tokenized_cmd);
-		my_free(path_cmd);
+		exit(EXIT_FAILURE);
+		perror("execve");
 	}
+	my_free2d((void **)tokenized_cmd);
+	my_free(path_cmd);
 }
 
 char	*check_addpath_cmd(char *command, char *envp[])
@@ -41,12 +37,15 @@ char	*check_addpath_cmd(char *command, char *envp[])
 	char	*path_cmd;
 
 	path = my_getpath(envp);
+	if (!path)
+		my_perr("getpath malloc", true);
 	path_cmd = my_addpath_cmd(command, path);
 	if (path_cmd == NULL)
 	{
 		ft_putstr_fd(command, 2);
 		ft_putstr_fd(": command not found\n", 2);
 	}
+	my_free(path);
 	return (path_cmd);
 }
 
@@ -91,5 +90,5 @@ char	*my_getpath(char *envp[])
 		}
 		i++;
 	}
-	return (path);
+	return (ft_strdup(path));
 }
