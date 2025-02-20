@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 15:39:44 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:23:13 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	execute_command(char *command, char *envp[], t_pipex *pipex);
 pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
 pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
 
-void	check_args(char *argv[]);
+void	check_args(int argc, char *argv[]);
 void	check_open_files(int argc, char *argv[], t_pipex *pipex);
 char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex);
 char	*my_getpath(char *envp[]);

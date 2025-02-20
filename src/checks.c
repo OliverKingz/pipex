@@ -6,13 +6,13 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 15:27:18 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:43:17 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	check_args(char *argv[])
+void	check_args(int argc, char *argv[])
 {
 	int	i;
 
@@ -20,16 +20,21 @@ void	check_args(char *argv[])
 	while (argv[i] != NULL)
 	{
 		if (ft_strlen(argv[i]) == 0)
-			(ft_putstr_fd("Error: empty arg\n", 2), exit(1));
+				ft_putstr_fd("Error\n", 2);
+				exit
 		i++;
 	}
+	// Los 4 no pueden estar vacios
+	// Si infile vacio, error y salir
+	// Si comandos vacios, entra y no hace nada. No es un error
+	// Si outfile vacio, error y salir. 
 }
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 {
 	pipex->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex->outfile == -1)
-		(close_fds(pipex), my_perr(argv[argc - 1], true));
+		(close_fds(pipex), my_perr(argv[argc - 1], false));
 	pipex->infile = open(argv[1], O_RDONLY);
 	if (pipex->infile == -1 || access(argv[1], F_OK | R_OK) == -1)
 	{

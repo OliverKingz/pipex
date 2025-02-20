@@ -1,0 +1,26 @@
+TEST 15:
+./pipex "infiles/basic.txt" "sleep 3" "cat -e" "outfiles/outfile_without_permissions" 
+< infiles/basic.txt sleep 3 | cat -e > outfiles/outfile_without_permissions_tester
+
+Time:   
+Your execution time: 0
+Orig execution time: 3
+
+------------------------------------------------------------------------------------------------------------------------
+TEST 17:
+./pipex "infiles/basic.txt" "nonexistingcommand" "cat -e" "outfiles/outfile" 
+< infiles/basic.txt nonexistingcommand | cat -e > outfiles/outfile_tester
+
+Leaks:  
+Valgrind found an error. To get valgrind output, you have 2 options
+a) run the tester like this: bash run.sh --show-valgrind
+b) run: valgrind --leak-check=full --errors-for-leak-kinds=all ./pipex "infiles/basic.txt" "nonexistingcommand" "cat -e" "outfiles/outfile" 
+------------------------------------------------------------------------------------------------------------------------
+TEST 18:
+./pipex "infiles/basic.txt" "cat -e" "nonexistingcommand" "outfiles/outfile" 
+< infiles/basic.txt cat -e | nonexistingcommand > outfiles/outfile_tester
+
+Leaks:  
+Valgrind found an error. To get valgrind output, you have 2 options
+a) run the tester like this: bash run.sh --show-valgrind
+b) run: valgrind --leak-check=full --errors-for-leak-kinds=all ./pipex "infiles/basic.txt" "cat -e" "nonexistingcommand" "outfiles/outfile" 

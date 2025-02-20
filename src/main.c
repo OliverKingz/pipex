@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:35:09 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 15:29:11 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:23:18 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc != 5)
 		(ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2), exit(1));
-	check_args(argv);
+	check_args(argc, argv);
 	init_struct(argc, &pipex);
 	check_open_files(argc, argv, &pipex);
 	i = 0;
