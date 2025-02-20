@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 21:02:41 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 14:03:53 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:24:06 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ void	my_free(void *allocatedMemory)
 		free(allocatedMemory);
 		allocatedMemory = NULL;
 	}
-}
-
-void	init_struct(t_pipex *pipex)
-{
-	pipex->infile = -1;
-	pipex->outfile = -1;
-	pipex->pd[0] = -1;
-	pipex->pd[1] = -1;
-	pipex->num_cmds = -1;
 }
 
 void	close_fds(t_pipex *pipex)
