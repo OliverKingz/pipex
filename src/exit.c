@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 21:02:41 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/19 16:48:29 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:03:53 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,16 @@ void	init_struct(t_pipex *pipex)
 	pipex->pd[0] = -1;
 	pipex->pd[1] = -1;
 	pipex->num_cmds = -1;
+}
+
+void	close_fds(t_pipex *pipex)
+{
+	if (pipex->infile != -1)
+		close(pipex->infile);
+	if (pipex->outfile != -1)
+		close(pipex->outfile);
+	if (pipex->pd[0] != -1)
+		close(pipex->pd[0]);
+	if (pipex->pd[1] != -1)
+		close(pipex->pd[1]);
 }
