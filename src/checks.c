@@ -6,28 +6,43 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 16:43:17 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/21 00:42:24 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/**
+ * @brief Checks the validity of the arguments passed to the program.
+ *
+ * This function checks if the input file (argv[1]) and the output file
+ * (argv[argc - 1]) are not empty. If either of them is empty, it prints
+ * a syntax error message and exits the program with a failure status.
+ *
+ * @param argc The number of arguments passed to the program.
+ * @param argv The array of arguments passed to the program.
+ *
+ * @note The function handles the following cases:
+ * 
+ * - If the input file is empty, it prints a syntax error and exits.
+ * 
+ * - If the output file is empty, it prints a syntax error and exits.
+ * 
+ * - If the commands are empty, it does nothing (not an error).
+ */
 void	check_args(int argc, char *argv[])
 {
-	int	i;
+	bool in_empty;
+	bool out_empty;
 
-	i = 1;
-	while (argv[i] != NULL)
-	{
-		if (ft_strlen(argv[i]) == 0)
-				ft_putstr_fd("Error\n", 2);
-				exit
-		i++;
-	}
-	// Los 4 no pueden estar vacios
-	// Si infile vacio, error y salir
-	// Si comandos vacios, entra y no hace nada. No es un error
-	// Si outfile vacio, error y salir. 
+	in_empty = false;
+	out_empty = false;
+	if (ft_strlen(argv[1]) == 0)
+		in_empty = true;
+	if (ft_strlen(argv[argc - 1]) == 0)
+		out_empty = true;
+	if (in_empty || out_empty)
+		(ft_putstr_fd("syntax error\n", 2), exit(EXIT_FAILURE));
 }
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
