@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:35:09 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 16:23:18 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/21 23:09:41 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char *argv[], char *envp[])
 	check_args(argc, argv);
 	init_struct(argc, &pipex);
 	check_open_files(argc, argv, &pipex);
+	init_pipes(&pipex);
 	i = 0;
 	while (i < pipex.num_cmds)
 	{

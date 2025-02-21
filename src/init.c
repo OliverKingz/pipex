@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:23:47 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/20 15:30:27 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/21 23:09:29 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_struct(int argc, t_pipex *pipex)
 	pipex->pd[0] = -1;
 	pipex->pd[1] = -1;
 	pipex->num_cmds = -1;
-	init_pipes(pipex);
 	pipex->num_cmds = argc - 3;
 }
 
