@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/21 00:42:24 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/21 23:44:53 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@
  * @param argv The array of arguments passed to the program.
  *
  * @note The function handles the following cases:
- * 
+ *
  * - If the input file is empty, it prints a syntax error and exits.
- * 
+ *
  * - If the output file is empty, it prints a syntax error and exits.
- * 
+ *
  * - If the commands are empty, it does nothing (not an error).
  */
 void	check_args(int argc, char *argv[])
 {
-	bool in_empty;
-	bool out_empty;
+	bool	in_empty;
+	bool	out_empty;
 
 	in_empty = false;
 	out_empty = false;
@@ -42,7 +42,7 @@ void	check_args(int argc, char *argv[])
 	if (ft_strlen(argv[argc - 1]) == 0)
 		out_empty = true;
 	if (in_empty || out_empty)
-		(ft_putstr_fd("syntax error\n", 2), exit(EXIT_FAILURE));
+		(ft_putstr_fd(ERR_MSG_SYNTAX, 2), exit(EXIT_FAILURE));
 }
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
@@ -67,12 +67,13 @@ char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex)
 
 	path = my_getpath(envp);
 	if (!path)
-		(close_fds(pipex), my_perr("getpath malloc", true));
+		(close_fds(pipex), my_perr(ERR_MSG_MALLOC, true));
 	path_cmd = my_addpath_cmd(command, path, pipex);
 	if (path_cmd == NULL)
 	{
 		ft_putstr_fd(command, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd(ERR_MSG_CMD_NOT_FOUND, 2);
+		path_cmd = command;
 	}
 	my_free(path);
 	return (path_cmd);
@@ -89,7 +90,7 @@ char	*my_addpath_cmd(char *command, char *path, t_pipex *pipex)
 	{
 		path_cmd = ft_strjoin_char(path_dir, command, '/');
 		if (!path_cmd)
-			(close_fds(pipex), my_perr("malloc", true));
+			(close_fds(pipex), my_perr(ERR_MSG_MALLOC, true));
 		if (access(path_cmd, F_OK | X_OK) == 0)
 			break ;
 		else

@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:28:32 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/21 23:18:21 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/21 23:45:10 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_command(char *command, char *envp[], t_pipex *pipex)
 	{
 		close_fds(pipex);
 		my_free2d((void **)tokenized_cmd);
-		exit(127);
+		exit(ERR_CMD_NOT_FOUND);
 	}
 	my_free2d((void **)tokenized_cmd);
 	my_free(path_cmd);
@@ -64,7 +64,8 @@ pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 		if (dup2(pipex->pd[0], 0) == -1)
 			(close_fds(pipex), my_perr("dup2", true));
 		if (dup2(pipex->outfile, 1) == -1)
-		{	if (pipex->outfile == -1)
+		{
+			if (pipex->outfile == -1)
 				(close_fds(pipex), exit(EXIT_FAILURE));
 			(close_fds(pipex), my_perr("dup2", true));
 		}
