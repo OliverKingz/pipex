@@ -6,30 +6,12 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/22 02:25:24 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 02:46:44 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/**
- * @brief Checks the validity of the arguments passed to the program.
- *
- * This function checks if the input file (argv[1]) and the output file
- * (argv[argc - 1]) are not empty. If either of them is empty, it prints
- * a syntax error message and exits the program with a failure status.
- *
- * @param argc The number of arguments passed to the program.
- * @param argv The array of arguments passed to the program.
- *
- * @note The function handles the following cases:
- *
- * - If the input file is empty, it prints a syntax error and exits.
- *
- * - If the output file is empty, it prints a syntax error and exits.
- *
- * - If the commands are empty, it does nothing (not an error).
- */
 void	check_args(int argc, char *argv[])
 {
 	bool	in_empty;
