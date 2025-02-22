@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/17 17:32:31 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/22 23:23:08 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,17 +28,15 @@ BONUS_NAME	:= pipex_bonus
 
 # **************************************************************************** #
 # FILES
-SRC_COMMON_FILES	:= $(wildcard $(SRC_DIR)*.c)
-#SRC_COMMON_FILES	:= test/env.c
-SRC_FILES			:= $(SRC_COMMON_FILES)
+SRC_COMMON_FILES	:= checks commands exit init
+SRC_FILES			:= main $(SRC_COMMON_FILES)
 SRC_BONUS_FILES		:= $(SRC_COMMON_FILES)
 
 # INCLUDE FILES
 INC_FILES	:= $(NAME)
 
 # GENERAL FILES
-#SRCS	:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
-SRCS	:= $(SRC_FILES)
+SRCS	:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJS	:= $(SRCS:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 DEPS	:= $(SRCS:$(SRC_DIR)%.c=$(OBJ_DIR)%.d)
 INCS	:= $(addprefix $(INC_DIR), $(addsuffix .h, $(INC_FILES)))
