@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:28:32 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/22 00:30:17 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 01:25:26 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@ void	execute_command(char *command, char *envp[], t_pipex *pipex)
 	if (!tokenized_cmd)
 		(close_fds(pipex), my_perr("ft_split", true));
 	path_cmd = check_addpath_cmd(tokenized_cmd[0], envp, pipex);
+	if (!path_cmd)
+	{
+		close_fds(pipex);
+		my_free2d((void **)tokenized_cmd);
+		exit(ERR_CMD_NOT_FOUND);
+	}
 	if (execve(path_cmd, tokenized_cmd, envp) == -1)
 	{
 		close_fds(pipex);
 		my_free2d((void **)tokenized_cmd);
+		my_free(path_cmd);
 		exit(ERR_CMD_NOT_FOUND);
 	}
 	my_free2d((void **)tokenized_cmd);

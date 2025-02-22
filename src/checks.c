@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/22 00:18:58 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 01:24:59 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex)
 	char	*path;
 	char	*path_cmd;
 
-	if (!command)
-		return (command);
+	if (!command || ft_strlen(command) == 0)
+		return (NULL);
 	path = my_getpath(envp);
 	if (!path)
 		(close_fds(pipex), my_perr(ERR_MSG_MALLOC, true));
@@ -75,7 +75,8 @@ char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex)
 	{
 		ft_putstr_fd(command, 2);
 		ft_putstr_fd(ERR_MSG_CMD_NOT_FOUND, 2);
-		path_cmd = command;
+		my_free(path);
+		return (NULL);
 	}
 	my_free(path);
 	return (path_cmd);
