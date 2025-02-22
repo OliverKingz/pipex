@@ -21,9 +21,9 @@ Keywords
 - [Bonus Features](#bonus-features)
 - [Functions Allowed](#functions-allowed)
 - [How It Works](#how-it-works)
-  - [Example Usage](#example-usage)
-  - [Bonus Usage](#bonus-usage)
-  - [Error Handling Examples](#error-handling-examples)
+  - [Basic Functionality Tests](#basic-functionality-tests)
+  - [Error Handling Tests](#error-handling-tests)
+  - [Bonus Functionality Tests](#bonus-functionality-tests)
 - [What I Learned](#what-i-learned)
 - [Installation](#installation)
 - [Author](#author)
@@ -89,8 +89,6 @@ The following functions are authorized for use in the `pipex` project. Each func
 ### 8. **Custom Functions**
 - **`ft_printf()`**: A custom implementation of `printf` (if you have coded one). Used for formatted output.
 
----
-
 ## How It Works  
 The program takes four arguments: two file names and two shell commands. It executes the commands in a pipeline, redirecting the input and output as specified.
 
@@ -103,6 +101,10 @@ This behaves the same as the following shell command:
 < infile ls -l | wc -l > outfile
 ```
 
+---
+
+### Basic Functionality Tests
+
 | **Input Command**                                      | **Shell Equivalent**                          | **Description**                                                                 | **Expected Output**                                                                |
 |--------------------------------------------------------|-----------------------------------------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | `./pipex empty "ls -l" "wc -l" outfile`                | `ls -l \| wc -l > outfile`                    | Lists files in the current directory and counts lines (no input file needed).   | Number of lines from `ls -l` written to `outfile`.                                 |
@@ -110,41 +112,40 @@ This behaves the same as the following shell command:
 | `./pipex empty "whoami" "tr 'a-z' 'A-Z'" outfile`      | `whoami \| tr 'a-z' 'A-Z' > outfile`          | Outputs the current username and converts it to uppercase.                      | Uppercase username written to `outfile`.                                           |
 | `./pipex empty "seq 10" "tail -n 5" outfile`           | `seq 10 \| tail -n 5 > outfile`               | Generates numbers from 1 to 10 and extracts the last 5 numbers.                 | Numbers 6 to 10 written to `outfile`.                                              |
 | `./pipex empty "env" "grep PATH" outfile`              | `env \| grep PATH > outfile`                  | Lists all environment variables and filters lines containing "PATH".            | Lines containing "PATH" written to `outfile`.                                      |
-| `./pipex infile "grep a1" "wc -w" outfile`             | `< infile grep a1 \| wc -w > outfile`         | Searches for lines containing "a1" in `infile` and counts words.                | Number of words in lines containing "a1" written to `outfile`.                     |
-| `./pipex infile "cat" "wc -c" outfile`                 | `< infile cat \| wc -c > outfile`             | Outputs the content of `infile` and counts characters.                          | Number of characters in `infile` written to `outfile`.                             |
+| `./pipex infile "cat -e" "cat -e" outfile`             | `< infile cat -e \| cat -e > outfile`         | Outputs the content of `infile` with `-e` flag applied twice.                   | Content of `infile` with `-e` flag applied twice written to `outfile`.             |
+| `./pipex infile "ls -la" "cat -e" outfile`             | `< infile ls -la \| cat -e > outfile`         | Lists files in the current directory and applies `cat -e`.                      | Output of `ls -la` with `cat -e` applied written to `outfile`.                     |
+| `./pipex infile "sleep 3" "ls" outfile`                | `< infile sleep 3 \| ls > outfile`            | Waits for 3 seconds and lists files in the current directory.                   | Output of `ls` written to `outfile`.                                               |
+| `./pipex infile "grep ep" "wc -w" outfile`             | `< infile grep ep \| wc -w > outfile`         | Searches for lines containing "ep" in `infile` and counts words.                | Number of words in lines containing "a1" written to `outfile`.                     |
 | `./pipex infile "sort" "uniq" outfile`                 | `< infile sort \| uniq > outfile`             | Sorts the content of `infile` and removes duplicate lines.                      | Sorted and deduplicated content written to `outfile`.                              |
-| `./pipex infile "cut -d: -f1" "sort" outfile`          | `< infile cut -d: -f1 \| sort > outfile`      | Extracts the first field from `infile` (colon-separated) and sorts it.          | Sorted list of first fields written to `outfile`.                                  |
 | `./pipex infile "awk '{print $1}'" "wc -l" outfile`    | `< infile awk '{print $1}' \| wc -l > outfile`| Extracts the first column from `infile` and counts lines.                       | Number of lines in the first column written to `outfile`.                          |
-| `./pipex infile "sed 's/foo/bar/'" "wc -c" outfile`    | `< infile sed 's/foo/bar/' \| wc -c > outfile`| Replaces "foo" with "bar" in `infile` and counts characters.                    | Number of characters after replacement written to `outfile`.                       |
 | `./pipex infile "head -n 5" "tail -n 1" outfile`       | `< infile head -n 5 \| tail -n 1 > outfile`   | Extracts the first 5 lines of `infile` and then the last line of those 5.       | The 5th line of `infile` written to `outfile`.                                     |
 | `./pipex infile "tr ' ' '\n'" "sort" outfile`          | `< infile tr ' ' '\n' \| sort > outfile`      | Splits words in `infile` by spaces and sorts them.                              | Sorted list of words written to `outfile`.                                         |
 | `./pipex infile "grep pattern" "wc -l" outfile`        | `< infile grep pattern \| wc -l > outfile`    | Searches for "pattern" in `infile` and counts matching lines.                   | Number of lines containing "pattern" written to `outfile`.                         |
-| `./pipex infile "cat" "grep error" outfile`            | `< infile cat \| grep error > outfile`        | Outputs the content of `infile` and filters lines containing "error".           | Lines containing "error" written to `outfile`.                                     |
-| `./pipex infile "sort" "head -n 10" outfile`           | `< infile sort \| head -n 10 > outfile`       | Sorts the content of `infile` and extracts the first 10 lines.                  | First 10 sorted lines written to `outfile`.                                        |
 
-### Bonus Usage  
-For multiple pipes:  
-```bash
-./pipex infile "cmd1" "cmd2" "cmd3" outfile
-```  
+---
 
-For here document:  
-```bash
-./pipex here_doc LIMITER "cmd" "cmd1" outfile
-```  
+### Error Handling Tests
 
-| **Input Command**                                      | **Description**                                                                 | **Expected Output**                                                                 |
-|--------------------------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| `./pipex infile "cmd1" "cmd2" "cmd3" outfile`          | Executes three commands in a pipeline.                                          | Output of `cmd3` written to `outfile`.                                             |
-| `./pipex here_doc LIMITER "cmd" "cmd1" outfile`        | Uses `here_doc` to read input until `LIMITER` is found, then processes it.      | Output of `cmd1` appended to `outfile`.                                            |
+| **Input Command**                                        | **Shell Equivalent**                                | **Description**                                                         | **Expected Output**                                                                 |
+|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| `./pipex non_existent_file "ls -l" "wc -l" outfile`      | `< non_existent_file ls -l \| wc -l > outfile`      | Tries to read from a non-existent file.                                 | `non_existent_file: No such file or directory`                                      |
+| `./pipex infile "invalid_cmd" "wc -l" outfile`           | `< infile invalid_cmd \| wc -l > outfile`           | Tries to execute an invalid command.                                    | `invalid_cmd: command not found`                                                    |
+| `./pipex infile "ls -l" "wc -l" unwritable_file`         | `< infile ls -l \| wc -l > unwritable_file`         | Tries to write to an unwritable file.                                   | `unwritable_file: Permission denied`                                                |
+| `./pipex infile_nopermissions "cat -e" "cat -e" outfile` | `< infile_nopermissions cat -e \| cat -e > outfile` | Tries to read from a file without permissions.                          | `infile_nopermissions: Permission denied`                                           |
+| `./pipex infile "cat -e" "cat -e" outfile_nopermissions` | `< infile cat -e \| cat -e > outfile_nopermissions` | Tries to write to a file without permissions.                           | `outfile_nopermissions: Permission denied`                                          |
+| `./pipex infile "nonexistingcommand" "cat -e" outfile`   | `< infile nonexistingcommand \| cat -e > outfile`   | Tries to execute a non-existing command.                                | `nonexistingcommand: command not found`                                             |
+| `./pipex infile "cat -e" "nonexistingcommand" outfile`   | `< infile cat -e \| nonexistingcommand > outfile`   | Tries to execute a non-existing command as the second command.          | `nonexistingcommand: command not found`                                             |
+| `./pipex infile "cat -e" "cat -nonexistingflag" outfile` | `< infile cat -e \| cat -nonexistingflag > outfile` | Tries to use a non-existing flag with `cat`.                            | `cat: invalid option -- 'o'`                                                        |
+| `./pipex "" "cat -e" "cat -e" outfile`                   | `< "" cat -e \| cat -e > outfile`                   | Missing input file argument.                                            | ` : No such file or directory`                                                 |
 
-### Error Handling Examples
+---
 
-| **Input Command**                                      | **Description**                                                                 | **Expected Output**                                                                 |
-|--------------------------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| `./pipex non_existent_file "ls -l" "wc -l" outfile`    | Tries to read from a non-existent file.                                         | Error message: `Error: No such file or directory`.                                 |
-| `./pipex infile "invalid_cmd" "wc -l" outfile`         | Tries to execute an invalid command.                                            | Error message: `Error: Command not found`.                                         |
-| `./pipex infile "ls -l" "wc -l" unwritable_file`       | Tries to write to an unwritable file.                                           | Error message: `Error: Permission denied`.                                         |
+### Bonus Functionality Tests
+
+| **Input Command**                                      | **Shell Equivalent**                          | **Description**                                                                 | **Expected Output**                                                                 |
+|--------------------------------------------------------|-----------------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| `./pipex infile "cmd1" "cmd2" "cmd3" outfile`          | `< infile cmd1 \| cmd2 \| cmd3 > outfile`     | Executes three commands in a pipeline.                                          | Output of `cmd3` written to `outfile`.                                             |
+| `./pipex here_doc LIMITER "cmd" "cmd1" outfile`        | `cmd << LIMITER \| cmd1 >> outfile`           | Uses `here_doc` to read input until `LIMITER` is found, then processes it.      | Output of `cmd1` appended to `outfile`.                                            |
 
 ---
 
