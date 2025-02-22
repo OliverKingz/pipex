@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/22 01:24:59 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 02:20:07 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ void	check_args(int argc, char *argv[])
 		in_empty = true;
 	if (ft_strlen(argv[argc - 1]) == 0)
 		out_empty = true;
-	if (in_empty || out_empty)
-		(ft_putstr_fd(ERR_MSG_SYNTAX, 2), exit(EXIT_FAILURE));
+	if (in_empty && out_empty)
+	{
+		ft_putstr_fd(ERR_MSG_NO_SUCH_FILE, 2);
+		(ft_putstr_fd(ERR_MSG_NO_SUCH_FILE, 2), exit(EXIT_FAILURE));
+	}
 }
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)

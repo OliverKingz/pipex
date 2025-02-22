@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:54:25 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/21 23:48:49 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 02:04:15 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_pipex
 
 # define ERR_MSG_SYNTAX "syntax error\n"
 # define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
+# define ERR_MSG_NO_SUCH_FILE "No such file or directory\n"
 # define ERR_MSG_MALLOC "malloc\n"
 
 # define ERR_CMD_NOT_FOUND 127
@@ -63,19 +64,5 @@ void	my_perr(const char *msg, bool should_exit);
 void	my_free2d(void **array2d);
 void	my_free(void *allocatedMemory);
 void	close_fds(t_pipex *pipex);
-
-/*
-Input Command
-./pipex infile "ls -l" "wc -l" outfile
-./pipex infile "grep a1" "wc -w" outfile
-./pipex infile "cat" "wc -c" outfile
-./pipex infile "echo Hello" "tr 'a-z' 'A-Z'" outfile
-./pipex infile "sort" "uniq" outfile
-./pipex infile "cut -d: -f1" "sort" outfile
-./pipex infile "awk '{print $1}'" "wc -l" outfile
-./pipex infile "sed 's/foo/bar/'" "wc -c" outfile
-./pipex infile "head -n 5" "tail -n 1" outfile
-./pipex infile "tr ' ' '\n'" "sort" outfile
-*/
 
 #endif

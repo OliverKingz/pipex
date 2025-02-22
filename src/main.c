@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:35:09 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/21 23:09:41 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 02:07:53 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ int	main(int argc, char *argv[], char *envp[])
 	waitpid(pid[1], &status, 0);
 	return (WEXITSTATUS(status));
 }
-// while (waitpid(-1, NULL, 0) > 0);
