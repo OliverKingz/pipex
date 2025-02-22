@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:26:14 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/22 02:46:44 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/22 23:32:05 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,26 @@ char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex)
 
 	if (!command || ft_strlen(command) == 0)
 		return (NULL);
+	if (ft_strchr(command, '/') != NULL)
+	{
+		if (access(command, F_OK | X_OK) == 0)
+			return (ft_strdup(command));
+		else
+		{
+			ft_putstr_fd(command, 2);
+			ft_putstr_fd(ERR_MSG_CMD_NOT_FOUND, 2);
+			return (NULL);
+		}
+	}
 	path = my_getpath(envp);
 	path_cmd = my_addpath_cmd(command, path, pipex);
 	if (path_cmd == NULL)
 	{
 		ft_putstr_fd(command, 2);
 		ft_putstr_fd(ERR_MSG_CMD_NOT_FOUND, 2);
-		my_free(path);
-		return (NULL);
+		return (my_free(path), NULL);
 	}
-	my_free(path);
-	return (path_cmd);
+	return (my_free(path), path_cmd);
 }
 
 char	*my_addpath_cmd(char *command, char *path, t_pipex *pipex)
