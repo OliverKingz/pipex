@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/23 23:16:58 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/23 23:22:03 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,7 +136,7 @@ fclean:
 re: fclean all
 
 # **************************************************************************** #
-# CHECKER / BONUS RULES
+# BONUS RULES
 
 bonus: libft $(BONUS_NAME)
 $(BONUS_NAME): $(OBJS_BONUS)
