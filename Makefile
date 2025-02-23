@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/22 23:23:08 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/23 23:16:58 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,10 @@ LIB_DIR			:= lib/
 LIBFT_DIR		:= $(LIB_DIR)libft/
 LIBFT_INC_DIR	:= $(LIBFT_DIR)inc/
 
+SRC_BONUS_DIR	:= src/bonus/
+INC_BONUS_DIR	:= inc/bonus/
+OBJ_BONUS_DIR	:= obj/bonus/
+
 # **************************************************************************** #
 # PROJECT
 NAME		:= pipex
@@ -28,12 +32,13 @@ BONUS_NAME	:= pipex_bonus
 
 # **************************************************************************** #
 # FILES
-SRC_COMMON_FILES	:= checks commands exit init
-SRC_FILES			:= main $(SRC_COMMON_FILES)
-SRC_BONUS_FILES		:= $(SRC_COMMON_FILES)
+SRC_FILES		:= main exit init checks commands
+SRC_BONUS_FILES	:= main_bonus exit_bonus init_bonus checks_bonus commands_bonus \
+					here_doc
 
-# INCLUDE FILES
-INC_FILES	:= $(NAME)
+INC_FILES		:= $(NAME)
+INC_BONUS_FILES	:= $(BONUS_NAME)
+
 
 # GENERAL FILES
 SRCS	:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -42,10 +47,11 @@ DEPS	:= $(SRCS:$(SRC_DIR)%.c=$(OBJ_DIR)%.d)
 INCS	:= $(addprefix $(INC_DIR), $(addsuffix .h, $(INC_FILES)))
 INCS	+= $(LIBFT_INC_DIR)libft.h
 
-#SRCS_BONUS	:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_BONUS_FILES)))
-SRCS_BONUS	:= $(SRC_BONUS_FILES)
-OBJS_BONUS	:= $(SRCS_BONUS:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
-DEPS_BONUS	:= $(SRCS_BONUS:$(SRC_DIR)%.c=$(OBJ_DIR)%.d)
+SRCS_BONUS	:= $(addprefix $(SRC_BONUS_DIR), $(addsuffix .c, $(SRC_BONUS_FILES)))
+OBJS_BONUS	:= $(SRCS_BONUS:$(SRC_BONUS_DIR)%.c=$(OBJ_BONUS_DIR)%.o)
+DEPS_BONUS	:= $(SRCS_BONUS:$(SRC_BONUS_DIR)%.c=$(OBJ_BONUS_DIR)%.d)
+INCS_BONUS	:= $(addprefix $(INC_BONUS_DIR), $(addsuffix .h, $(INC_BONUS_FILES)))
+INCS_BONUS	+= $(LIBFT_INC_DIR)libft.h
 
 # **************************************************************************** #
 # COMPILER
@@ -54,6 +60,8 @@ CFLAGS	:= -Wall -Wextra -Werror
 CFLAGS	+= -MMD -MP
 IFLAGS	:= -I$(INC_DIR) -I$(LIBFT_INC_DIR)
 LDFLAGS	:= -L$(LIBFT_DIR) -lft
+
+IFLAGS_BONUS:= -I$(INC_BONUS_DIR) -I$(LIBFT_INC_DIR)
 
 # DEBUG MODE
 BUILD_MODE_FILE := .build_mode
@@ -132,15 +140,22 @@ re: fclean all
 
 bonus: libft $(BONUS_NAME)
 $(BONUS_NAME): $(OBJS_BONUS)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS_BONUS) $(LDFLAGS) -o $(BONUS_NAME) 
+	@$(CC) $(CFLAGS) $(IFLAGS_BONUS) $(OBJS_BONUS) $(LDFLAGS) -o $(BONUS_NAME) 
 	@printf "%b" "$(CL) -> $(BW)[$(BONUS_NAME)]:\t$(BG)Compilation success\t✅$(NC)\n"
+
+$(OBJ_BONUS_DIR):
+	@mkdir -p $(OBJ_BONUS_DIR)
+$(OBJ_BONUS_DIR)%.o: $(SRC_BONUS_DIR)%.c | $(OBJ_BONUS_DIR)
+	@mkdir -p $(dir $@)
+	@printf "%b" "$(CL) -> $(BW)[$(BONUS_NAME)]:\t\t$(NC)$<\r"
+	@$(CC) $(CFLAGS) $(IFLAGS_BONUS) -c $< -o $@
 
 # **************************************************************************** #
 # NORM AND DEBUG RULES
 
 # Rule to check if the files pass norminette
 norm:
-	@norminette $(SRCS) $(INCS)
+	@norminette $(SRC_DIR) $(INC_DIR)
 
 # Rule to compile object files from source files with debug flags
 debug:
@@ -179,7 +194,6 @@ show:
 	@echo "$(BY)Cleaning command:$(NC)\t rm -rf $(NAME) $(BONUS_NAME)"\
 		"$(OBJ_DIR)*.o $(OBJ_DIR)*.d $(OBJ_DIR) $(BUILD_MODE_FILE)"
 
-
 # Rule to show all variables being used
 info:
 	@echo "$(BY)\nozamora's Project:$(NC)"
@@ -199,6 +213,7 @@ info:
 	@echo "$(BB)LIBFT_DIR: $(NC)$(LIBFT_DIR)"
 	@echo "$(BB)LIBFT_INC_DIR: $(NC)$(LIBFT_INC_DIR)"
 	@echo "$(BY)\nFiles:$(NC)"
+	@echo "$(BB)NAME: $(NC)$(NAME)"
 	@echo "$(BB)SRC_FILES: $(NC)$(SRC_FILES)"
 	@echo "$(BB)INC_FILES: $(NC)$(INC_FILES)"
 	@echo "$(BB)SRCS: $(NC)$(SRCS)"
@@ -208,9 +223,12 @@ info:
 	@echo "$(BY)\nBonus:$(NC)"
 	@echo "$(BB)BONUS_NAME: $(NC)$(BONUS_NAME)"
 	@echo "$(BB)SRC_BONUS_FILES: $(NC)$(SRC_BONUS_FILES)"
+	@echo "$(BB)INC_BONUS_FILES: $(NC)$(INC_BONUS_FILES)"
 	@echo "$(BB)SRCS_BONUS: $(NC)$(SRCS_BONUS)"
 	@echo "$(BB)OBJS_BONUS: $(NC)$(OBJS_BONUS)"
 	@echo "$(BB)DEPS_BONUS: $(NC)$(DEPS_BONUS)"
+	@echo "$(BB)INCS_BONUS: $(NC)$(INCS_BONUS)"
+	@echo "$(BB)IFLAGS_BONUS: $(NC)$(IFLAGS_BONUS)"
 
 -include $(DEPS) $(DEPS_BONUS)
 .PHONY: all clean fclean re bonus norm debug valgrind show info
