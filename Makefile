@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/23 23:22:03 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/24 00:22:07 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ BONUS_NAME	:= pipex_bonus
 # FILES
 SRC_FILES		:= main exit init checks commands
 SRC_BONUS_FILES	:= main_bonus exit_bonus init_bonus checks_bonus commands_bonus \
-					here_doc
+					pipex_bonus
 
 INC_FILES		:= $(NAME)
 INC_BONUS_FILES	:= $(BONUS_NAME)

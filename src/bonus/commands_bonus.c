@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:11 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/23 23:14:16 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 00:27:55 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 	if (pid == 0)
 	{
 		close(pipex->pd[0][0]);
-		if (dup2(pipex->infile, 0) == -1)
+		if (dup2(pipex->infile, STDIN_FILENO) == -1)
 			(close_fds(pipex), my_perr("dup2", true));
-		if (dup2(pipex->pd[0][1], 1) == -1)
+		if (dup2(pipex->pd[0][1], STDOUT_FILENO) == -1)
 			(close_fds(pipex), my_perr("dup2", true));
 		(close(pipex->infile), close(pipex->pd[0][1]));
 		execute_command(argv[i + 2], envp, pipex);
@@ -68,9 +68,9 @@ pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 	if (pid == 0)
 	{
 		close(pipex->pd[0][1]);
-		if (dup2(pipex->pd[0][0], 0) == -1)
+		if (dup2(pipex->pd[0][0], STDIN_FILENO) == -1)
 			(close_fds(pipex), my_perr("dup2", true));
-		if (dup2(pipex->outfile, 1) == -1)
+		if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
 		{
 			if (pipex->outfile == -1)
 				(close_fds(pipex), exit(EXIT_FAILURE));
@@ -80,4 +80,30 @@ pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 		execute_command(argv[i + 2], envp, pipex);
 	}
 	return (pid);
+}
+
+int middle_execution(int i, char **argv, char **envp, t_pipex *pipex)
+{
+	int pid;
+	int read_pipe;
+	int write_pipe;
+
+	read_pipe = (i - 1) % 2;
+	write_pipe = i % 2;
+	pid = fork();
+	if (pid == -1)
+		(close_fds(pipex), my_perr("fork", true));
+	if (pid == 0)
+	{
+		close(pipex->pd[read_pipe][1]);
+		close(pipex->pd[write_pipe][0]);
+		if (dup2(pipex->pd[read_pipe][0], STDIN_FILENO) == -1)
+			(close_fds(pipex), my_perr("dup2", true));
+		if (dup2(pipex->pd[write_pipe][1], STDOUT_FILENO) == -1)
+			(close_fds(pipex), my_perr("dup2", true));
+		close(pipex->pd[read_pipe][0]);
+		close(pipex->pd[write_pipe][1]);
+		execute_command(argv[i + 2], envp, pipex);
+	}
+	return pid;
 }

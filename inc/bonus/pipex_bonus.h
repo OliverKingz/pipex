@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:38:38 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/23 23:01:29 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 00:24:22 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,15 @@ typedef struct s_pipex
 	int		infile;
 	int		outfile;
 	int		pd[2][2];
-	int		num_cmds;
 	bool	here_doc;
+	int		num_cmds;
+	pid_t	*pid;
 }			t_pipex;
 
 /* ************************************************************************** */
+
+# define STDIN_FILENO 0
+# define STDOUT_FILENO 1
 
 # define ERR_MSG_SYNTAX "syntax error\n"
 # define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
@@ -47,13 +51,16 @@ typedef struct s_pipex
 /* ************************************************************************** */
 
 int			main(int argc, char *argv[], char *envp[]);
+int			pipex(char *argv[], char *envp[], t_pipex *pipex);
+int			here_doc(char *argv[], char *envp[], t_pipex *pipex);
 
-void		init_struct(int argc, t_pipex *pipex);
+void		init_struct(int argc, char *argv[], t_pipex *pipex);
 void		init_pipes(t_pipex *pipex);
 
 void		execute_command(char *command, char *envp[], t_pipex *pipex);
 pid_t		first_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
 pid_t		last_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
+pid_t		middle_execution(int i, char **argv, char **envp, t_pipex *pipex);
 
 void		check_args(int argc, char *argv[]);
 void		check_open_files(int argc, char *argv[], t_pipex *pipex);

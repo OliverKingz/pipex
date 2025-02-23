@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:47:57 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/23 23:12:28 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 00:05:16 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void	close_fds(t_pipex *pipex)
 		close(pipex->pd[1][0]);
 	if (pipex->pd[1][1] != -1)
 		close(pipex->pd[1][1]);
-
+	if (pipex->pid)
+		my_free(pipex->pid);
 }
