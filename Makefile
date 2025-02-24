@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/24 00:22:07 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/24 20:18:12 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ OBJ_BONUS_DIR	:= obj/bonus/
 # **************************************************************************** #
 # PROJECT
 NAME		:= pipex
-LIBFT		:= $(LIBFT_DIR)libft.a
 BONUS_NAME	:= pipex_bonus
+LIBFT		:= $(LIBFT_DIR)libft.a
 
 # **************************************************************************** #
 # FILES
@@ -36,8 +36,8 @@ SRC_FILES		:= main exit init checks commands
 SRC_BONUS_FILES	:= main_bonus exit_bonus init_bonus checks_bonus commands_bonus \
 					pipex_bonus
 
-INC_FILES		:= $(NAME)
-INC_BONUS_FILES	:= $(BONUS_NAME)
+INC_FILES		:= pipex
+INC_BONUS_FILES	:= pipex_bonus
 
 
 # GENERAL FILES
@@ -90,6 +90,7 @@ CL	= \033[2K
 
 # **************************************************************************** #
 # ESSENTIAL RULES
+-include $(DEPS) $(DEPS_BONUS)
 
 # Default rule to create the program
 all: libft $(NAME)
@@ -126,7 +127,7 @@ clean:
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Object files cleaned\t❎$(NC)\n"
 
 # Rule to clean generated files and the executablle
-fclean: 
+fclean:
 	@$(MAKE) clean > /dev/null
 	@$(MAKE) fclean -sC $(LIBFT_DIR)
 	@rm -rf $(NAME) $(BONUS_NAME)
@@ -230,7 +231,6 @@ info:
 	@echo "$(BB)INCS_BONUS: $(NC)$(INCS_BONUS)"
 	@echo "$(BB)IFLAGS_BONUS: $(NC)$(IFLAGS_BONUS)"
 
--include $(DEPS) $(DEPS_BONUS)
 .PHONY: all clean fclean re bonus norm debug valgrind show info
 .DEFAULT_GOAL := all
 
