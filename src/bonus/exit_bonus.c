@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:47:57 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 00:05:16 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:42:56 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,23 @@ void	my_free(void *allocatedMemory)
 
 void	close_fds(t_pipex *pipex)
 {
-	if (pipex->infile != -1)
-		close(pipex->infile);
-	if (pipex->outfile != -1)
-		close(pipex->outfile);
-	if (pipex->pd[0][0] != -1)
-		close(pipex->pd[0][0]);
-	if (pipex->pd[0][1] != -1)
-		close(pipex->pd[0][1]);
-	if (pipex->pd[1][0] != -1)
-		close(pipex->pd[1][0]);
-	if (pipex->pd[1][1] != -1)
-		close(pipex->pd[1][1]);
+	if (pipex->infile_fd != -1)
+		close(pipex->infile_fd);
+	if (pipex->outfile_fd != -1)
+		close(pipex->outfile_fd);
+	if (pipex->pipe_fd[0][0] != -1)
+		close(pipex->pipe_fd[0][0]);
+	if (pipex->pipe_fd[0][1] != -1)
+		close(pipex->pipe_fd[0][1]);
+	if (pipex->pipe_fd[1][0] != -1)
+		close(pipex->pipe_fd[1][0]);
+	if (pipex->pipe_fd[1][1] != -1)
+		close(pipex->pipe_fd[1][1]);
+}
+
+void	clean(t_pipex *pipex)
+{
+	close_fds(pipex);
 	if (pipex->pid)
 		my_free(pipex->pid);
 }

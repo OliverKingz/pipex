@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:15 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/23 22:49:16 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:44:38 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@ void	check_args(int argc, char *argv[])
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 {
-	pipex->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (pipex->outfile == -1)
-		(close_fds(pipex), my_perr(argv[argc - 1], false));
-	pipex->infile = open(argv[1], O_RDONLY);
-	if (pipex->infile == -1 || access(argv[1], F_OK | R_OK) == -1)
+	pipex->outfile_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
+			0644);
+	if (pipex->outfile_fd == -1)
+		(clean(pipex), my_perr(argv[argc - 1], false));
+	pipex->infile_fd = open(argv[1], O_RDONLY);
+	if (pipex->infile_fd == -1 || access(argv[1], F_OK | R_OK) == -1)
 	{
 		my_perr(argv[1], false);
-		pipex->infile = open("/dev/null", O_RDONLY);
-		if (pipex->infile == -1)
-			(close_fds(pipex), my_perr("/dev/null", true));
+		pipex->infile_fd = open("/dev/null", O_RDONLY);
+		if (pipex->infile_fd == -1)
+			(clean(pipex), my_perr("/dev/null", true));
 	}
 }
 
@@ -87,7 +88,7 @@ char	*my_addpath_cmd(char *command, char *path, t_pipex *pipex)
 	{
 		path_cmd = ft_strjoin_char(path_dir, command, '/');
 		if (!path_cmd)
-			(close_fds(pipex), my_perr(ERR_MSG_MALLOC, true));
+			(clean(pipex), my_perr(ERR_MSG_MALLOC, true));
 		if (access(path_cmd, F_OK | X_OK) == 0)
 			break ;
 		else

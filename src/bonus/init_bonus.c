@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:42:34 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 20:35:37 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:43:13 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	init_struct(int argc, char *argv[], t_pipex *pipex)
 {
-	pipex->infile = -1;
-	pipex->outfile = -1;
-	pipex->pd[0][0] = -1;
-	pipex->pd[0][1] = -1;
-	pipex->pd[1][0] = -1;
-	pipex->pd[1][1] = -1;
+	pipex->infile_fd = -1;
+	pipex->outfile_fd = -1;
+	pipex->pipe_fd[0][0] = -1;
+	pipex->pipe_fd[0][1] = -1;
+	pipex->pipe_fd[1][0] = -1;
+	pipex->pipe_fd[1][1] = -1;
 	pipex->here_doc = false;
 	pipex->num_cmds = -1;
 	pipex->pid = NULL;
@@ -36,11 +36,11 @@ void	init_struct(int argc, char *argv[], t_pipex *pipex)
 
 void	init_pipes(t_pipex *pipex)
 {
-	if (pipe(pipex->pd[0]) == -1)
-		(close_fds(pipex), my_perr("pipe", true));
-	if (pipex->num_cmds > 2 )
+	if (pipe(pipex->pipe_fd[0]) == -1)
+		(clean(pipex), my_perr("pipe", true));
+	if (pipex->num_cmds > 2)
 	{
-		if (pipe(pipex->pd[1]) == -1)
-			(close_fds(pipex), my_perr("pipe", true));
+		if (pipe(pipex->pipe_fd[1]) == -1)
+			(clean(pipex), my_perr("pipe", true));
 	}
 }
