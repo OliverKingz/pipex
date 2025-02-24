@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:42:34 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 00:21:50 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:35:37 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	init_pipes(t_pipex *pipex)
 {
 	if (pipe(pipex->pd[0]) == -1)
 		(close_fds(pipex), my_perr("pipe", true));
-	if (pipe(pipex->pd[1]) == -1)
-		(close_fds(pipex), my_perr("pipe", true));
+	if (pipex->num_cmds > 2 )
+	{
+		if (pipe(pipex->pd[1]) == -1)
+			(close_fds(pipex), my_perr("pipe", true));
+	}
 }
