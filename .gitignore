@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 pipex
-pipex_bonus
+.pipex_bonus
 .build_mode

@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:37:59 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 23:13:40 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:59:48 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	my_pipex(char *argv[], char *envp[], t_pipex *pipex)
 	}
 	close_fds(pipex);
 	i = -1;
-	// while (++i < pipex->num_cmds)
-	// 	waitpid(pipex->pid[i], &status, 0);
+	while (++i < pipex->num_cmds)
+		waitpid(pipex->pid[i], &status, 0);
 	my_free(pipex->pid);
 	return (status);
 }

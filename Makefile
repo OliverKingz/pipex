@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/24 20:18:12 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/25 19:37:14 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJ_BONUS_DIR	:= obj/bonus/
 # **************************************************************************** #
 # PROJECT
 NAME		:= pipex
-BONUS_NAME	:= pipex_bonus
+BONUS_NAME	:= .pipex_bonus
 LIBFT		:= $(LIBFT_DIR)libft.a
 
 # **************************************************************************** #
@@ -97,7 +97,8 @@ all: libft $(NAME)
 
 # Rule to create the program
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+	@rm -f $(BONUS_NAME)
+	@$(CC) $(CFLAGS) $(IFLAGS) $^ $(LDFLAGS) -o $(NAME)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Compilation success\t✅$(NC)\n"
 	@echo "─────────────────────────────────────────────────────$(BY)"
 	@echo "           ▗▄▄▖▗▄▄▄▖▗▄▄▖ ▗▄▄▄▖▗▖  ▗▖";
@@ -122,7 +123,7 @@ $(LIBFT):
 # Rule to clean generated files
 clean:
 	@rm -rf $(OBJ_DIR)*.o $(OBJ_DIR)*.d $(OBJ_DIR)
-	@rm -rf $(BUILD_MODE_FILE)
+	@rm -rf $(BUILD_MODE_FILE) 
 	@$(MAKE) clean -sC $(LIBFT_DIR)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Object files cleaned\t❎$(NC)\n"
 
@@ -141,14 +142,15 @@ re: fclean all
 
 bonus: libft $(BONUS_NAME)
 $(BONUS_NAME): $(OBJS_BONUS)
-	@$(CC) $(CFLAGS) $(IFLAGS_BONUS) $(OBJS_BONUS) $(LDFLAGS) -o $(BONUS_NAME) 
-	@printf "%b" "$(CL) -> $(BW)[$(BONUS_NAME)]:\t$(BG)Compilation success\t✅$(NC)\n"
+	@$(CC) $(CFLAGS) $(IFLAGS_BONUS) $(OBJS_BONUS) $(LDFLAGS) -o $(NAME) 
+	@touch $(BONUS_NAME)
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Bonus compiled\t\t✅$(NC)\n"
 
 $(OBJ_BONUS_DIR):
 	@mkdir -p $(OBJ_BONUS_DIR)
 $(OBJ_BONUS_DIR)%.o: $(SRC_BONUS_DIR)%.c | $(OBJ_BONUS_DIR)
 	@mkdir -p $(dir $@)
-	@printf "%b" "$(CL) -> $(BW)[$(BONUS_NAME)]:\t\t$(NC)$<\r"
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(NC)$<\r"
 	@$(CC) $(CFLAGS) $(IFLAGS_BONUS) -c $< -o $@
 
 # **************************************************************************** #
