@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:11 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 21:56:40 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:29:04 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ pid_t	middle_execution(int i, char **argv, char *envp[], t_pipex *pipex)
 			(clean(pipex), my_perr("dup2", true));
 		close(pipex->pipe_fd[read_pipe][0]);
 		close(pipex->pipe_fd[write_pipe][1]);
+		printf("Debug: Middle execution - i: %d, argv[i + 2]: %s, envp[0]: %s, pipex->pipe_fd[read_pipe][0]: %d, pipex->pipe_fd[read_pipe][1]: %d, pipex->pipe_fd[write_pipe][0]: %d, pipex->pipe_fd[write_pipe][1]: %d\n", i, argv[i + 2], envp[0], pipex->pipe_fd[read_pipe][0], pipex->pipe_fd[read_pipe][1], pipex->pipe_fd[write_pipe][0], pipex->pipe_fd[write_pipe][1]);
 		execute_command(argv[i + 2], envp, pipex);
 	}
 	return (pid);

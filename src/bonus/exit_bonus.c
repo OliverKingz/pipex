@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:47:57 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 21:42:56 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:33:52 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,6 @@ void	clean(t_pipex *pipex)
 	close_fds(pipex);
 	if (pipex->pid)
 		my_free(pipex->pid);
+	if (pipex->here_doc == true)
+		unlink("here_doc");
 }

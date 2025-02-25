@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:38:38 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 23:05:04 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:11:02 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_pipex
 
 int			main(int argc, char *argv[], char *envp[]);
 int			my_pipex(char *argv[], char *envp[], t_pipex *pipex);
-int			here_doc(char *argv[], char *envp[], t_pipex *pipex);
+void		here_doc(char *limiter, t_pipex *pipex);
 
 void		init_struct(int argc, char *argv[], t_pipex *pipex);
 void		init_pipes(t_pipex *pipex);

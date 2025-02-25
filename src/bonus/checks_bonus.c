@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:15 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/24 21:44:38 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:10:19 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,28 @@ void	check_args(int argc, char *argv[])
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 {
+	if (pipex->here_doc == false)
+	{
+		pipex->infile_fd = open(argv[1], O_RDONLY);
+		if (pipex->infile_fd == -1 || access(argv[1], F_OK | R_OK) == -1)
+		{
+			my_perr(argv[1], false);
+			pipex->infile_fd = open("/dev/null", O_RDONLY);
+			if (pipex->infile_fd == -1)
+				(clean(pipex), my_perr("/dev/null", true));
+		}
+	}
+	else
+	{
+		pipex->infile_fd = open("here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (pipex->infile_fd == -1)
+			(clean(pipex), my_perr("here_doc", false));
+		here_doc(argv[2], pipex);
+	}
 	pipex->outfile_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
 			0644);
 	if (pipex->outfile_fd == -1)
 		(clean(pipex), my_perr(argv[argc - 1], false));
-	pipex->infile_fd = open(argv[1], O_RDONLY);
-	if (pipex->infile_fd == -1 || access(argv[1], F_OK | R_OK) == -1)
-	{
-		my_perr(argv[1], false);
-		pipex->infile_fd = open("/dev/null", O_RDONLY);
-		if (pipex->infile_fd == -1)
-			(clean(pipex), my_perr("/dev/null", true));
-	}
 }
 
 char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex)
