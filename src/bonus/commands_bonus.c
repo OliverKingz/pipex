@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:11 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/25 21:29:04 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/26 01:24:49 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,68 +47,67 @@ pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 		(clean(pipex), my_perr("fork", true));
 	if (pid == 0)
 	{
-		close(pipex->pipe_fd[0][0]);
-		if (dup2(pipex->infile_fd, STDIN_FILENO) == -1)
+		close(pipex->pipe_fd[0]);
+		if (dup2(pipex->in_fd, STDIN_FILENO) == -1)
 			(clean(pipex), my_perr("dup2", true));
-		if (dup2(pipex->pipe_fd[0][1], STDOUT_FILENO) == -1)
+		if (dup2(pipex->pipe_fd[1], STDOUT_FILENO) == -1)
 			(clean(pipex), my_perr("dup2", true));
-		(close(pipex->infile_fd), close(pipex->pipe_fd[0][1]));
+		(close(pipex->in_fd), close(pipex->pipe_fd[1]));
 		execute_command(argv[i + 2], envp, pipex);
 	}
+	close(pipex->pipe_fd[1]);
+	pipex->prev_pipe_fd = pipex->pipe_fd[0];
 	return (pid);
 }
 
 pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 {
 	pid_t	pid;
-	int		read_pipe;
-	int		write_pipe;
 
-	read_pipe = (i - 1) % 2;
-	write_pipe = i % 2;
 	pid = fork();
 	if (pid == -1)
 		(clean(pipex), my_perr("fork", true));
 	if (pid == 0)
 	{
-		close(pipex->pipe_fd[read_pipe][1]);
-		if (dup2(pipex->pipe_fd[read_pipe][0], STDIN_FILENO) == -1)
+		close(pipex->pipe_fd[1]);
+		if (dup2(pipex->prev_pipe_fd, STDIN_FILENO) == -1)
 			(clean(pipex), my_perr("dup2", true));
-		if (dup2(pipex->outfile_fd, STDOUT_FILENO) == -1)
+		if (dup2(pipex->out_fd, STDOUT_FILENO) == -1)
 		{
-			if (pipex->outfile_fd == -1)
+			if (pipex->out_fd == -1)
 				(clean(pipex), exit(EXIT_FAILURE));
 			(clean(pipex), my_perr("dup2", true));
 		}
-		(close(pipex->outfile_fd), close(pipex->pipe_fd[read_pipe][0]));
+		(close(pipex->out_fd), close(pipex->prev_pipe_fd));
 		close_fds(pipex);
-		execute_command(argv[i + 2], envp, pipex);
+		execute_command(argv[i + 2 + pipex->here_doc], envp, pipex);
 	}
+	close(pipex->prev_pipe_fd);
 	return (pid);
 }
+
 pid_t	middle_execution(int i, char **argv, char *envp[], t_pipex *pipex)
 {
 	pid_t	pid;
-	int		read_pipe;
-	int		write_pipe;
 
-	read_pipe = (i - 1) % 2;
-	write_pipe = i % 2;
+	if (pipe(pipex->pipe_fd) == -1)
+		(clean(pipex), my_perr("pipe", true));
 	pid = fork();
 	if (pid == -1)
 		(clean(pipex), my_perr("fork", true));
 	if (pid == 0)
 	{
-		close(pipex->pipe_fd[read_pipe][1]);
-		close(pipex->pipe_fd[write_pipe][0]);
-		if (dup2(pipex->pipe_fd[read_pipe][0], STDIN_FILENO) == -1)
+		close(pipex->pipe_fd[0]);
+		if (dup2(pipex->prev_pipe_fd, STDIN_FILENO) == -1)
 			(clean(pipex), my_perr("dup2", true));
-		if (dup2(pipex->pipe_fd[write_pipe][1], STDOUT_FILENO) == -1)
+		if (dup2(pipex->pipe_fd[1], STDOUT_FILENO) == -1)
 			(clean(pipex), my_perr("dup2", true));
-		close(pipex->pipe_fd[read_pipe][0]);
-		close(pipex->pipe_fd[write_pipe][1]);
-		printf("Debug: Middle execution - i: %d, argv[i + 2]: %s, envp[0]: %s, pipex->pipe_fd[read_pipe][0]: %d, pipex->pipe_fd[read_pipe][1]: %d, pipex->pipe_fd[write_pipe][0]: %d, pipex->pipe_fd[write_pipe][1]: %d\n", i, argv[i + 2], envp[0], pipex->pipe_fd[read_pipe][0], pipex->pipe_fd[read_pipe][1], pipex->pipe_fd[write_pipe][0], pipex->pipe_fd[write_pipe][1]);
-		execute_command(argv[i + 2], envp, pipex);
+		close(pipex->prev_pipe_fd);
+		close(pipex->pipe_fd[1]);
+		execute_command(argv[i + 2 + pipex->here_doc], envp, pipex);
 	}
+	close(pipex->prev_pipe_fd);
+	close(pipex->pipe_fd[1]);
+	pipex->prev_pipe_fd = pipex->pipe_fd[0];
 	return (pid);
 }

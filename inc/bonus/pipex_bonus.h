@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:38:38 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/25 21:11:02 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/26 00:32:43 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,18 @@
 /* ************************************************************************** */
 typedef struct s_pipex
 {
-	int		infile_fd;
-	int		outfile_fd;
-	int		pipe_fd[2][2];
-	bool	here_doc;
+	int		in_fd;
+	int		out_fd;
+	int		pipe_fd[2];
+	int		prev_pipe_fd;
 	int		num_cmds;
 	pid_t	*pid;
+	int		here_doc;
 }			t_pipex;
 
 /* ************************************************************************** */
+# define TRUE 1
+# define FALSE 0
 
 # define STDIN_FILENO 0
 # define STDOUT_FILENO 1

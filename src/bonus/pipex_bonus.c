@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:37:59 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/25 21:23:36 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/26 01:21:01 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	here_doc(char *limiter, t_pipex *pipex)
 		if (ft_strncmp(hd_line, limiter, limit_len) == 0 
 			&& hd_line[ft_strlen(limiter)] == '\n')
 			break ;
-		(ft_putstr_fd(hd_line, pipex->infile_fd), my_free(hd_line));
+		(ft_putstr_fd(hd_line, pipex->in_fd), my_free(hd_line));
 	}
 	my_free(hd_line);
 }
@@ -41,18 +41,17 @@ int	my_pipex(char *argv[], char *envp[], t_pipex *pipex)
 	i = -1;
 	while (++i < pipex->num_cmds)
 	{
-		printf("Comando %d\n", i);
+		printf("Comando %d: %s\n", i, argv[i + 2 + pipex->here_doc]);
 		if (i == 0)
-			pipex->pid[i] = first_execution(i + pipex->here_doc, argv, envp, pipex);
+			pipex->pid[i] = first_execution(i, argv, envp, pipex);
 		else if (i == pipex->num_cmds - 1)
-			pipex->pid[i] = last_execution(i+ pipex->here_doc, argv, envp, pipex);
+			pipex->pid[i] = last_execution(i, argv, envp, pipex);
 		else
-			pipex->pid[i] = middle_execution(i+ pipex->here_doc, argv, envp, pipex);
+			pipex->pid[i] = middle_execution(i, argv, envp, pipex);
 	}
 	close_fds(pipex);
 	i = -1;
 	while (++i < pipex->num_cmds)
 		waitpid(pipex->pid[i], &status, 0);
-	my_free(pipex->pid);
-	return (status);
+	return (clean(pipex), status);
 }

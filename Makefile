@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/25 19:37:14 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/25 23:37:02 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,6 @@ SRC_BONUS_FILES	:= main_bonus exit_bonus init_bonus checks_bonus commands_bonus 
 
 INC_FILES		:= pipex
 INC_BONUS_FILES	:= pipex_bonus
-
 
 # GENERAL FILES
 SRCS	:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -181,7 +180,8 @@ valgrind:
 	@$(MAKE) -s VALGRIND=1
 	@echo " -> $(BW)[Valgrind]:\t\t$(BB)Valgrind mode enabled\t🟦$(NC)"
 	-@if [ ! -z "$(ARGS)" ]; then \
-		valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --track-fds=yes \
+		valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes \
+		--trace-children=yes --track-fds=yes \
 		./$(NAME) $(ARGS); \
 	fi
 
