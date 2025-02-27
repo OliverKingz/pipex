@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:38:38 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/27 00:34:35 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 02:29:25 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,19 @@ int			my_pipex(char *argv[], char *envp[], t_pipex *pipex);
 void		write_here_doc(char *limiter, t_pipex *pipex);
 
 void		init_struct(int argc, char *argv[], t_pipex *pipex);
+void		init_files(int argc, char *argv[], t_pipex *pipex);
+void		init_files_heredoc(int argc, char *argv[], t_pipex *pipex);
 void		init_pipes(t_pipex *pipex);
+
+void		check_args(int argc, char *argv[]);
+char		*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex);
+char		*my_getpath(char *envp[]);
+char		*my_addpath_cmd(char *command, char *path, t_pipex *pipex);
 
 void		execute_command(char *command, char *envp[], t_pipex *pipex);
 pid_t		first_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
 pid_t		last_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
 pid_t		middle_execution(int i, char *argv[], char *envp[], t_pipex *pipex);
-
-void		check_args(int argc, char *argv[]);
-void		check_open_files(int argc, char *argv[], t_pipex *pipex);
-char		*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex);
-char		*my_getpath(char *envp[]);
-char		*my_addpath_cmd(char *command, char *path, t_pipex *pipex);
 
 void		my_perr(const char *msg, bool should_exit);
 void		my_free2d(void **array2d);

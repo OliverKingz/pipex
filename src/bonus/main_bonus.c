@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:49:53 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/27 00:54:10 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 02:30:15 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	check_args(argc, argv);
 	init_struct(argc, argv, &pipex);
-	check_open_files(argc, argv, &pipex);
 	init_pipes(&pipex);
+	if (pipex.here_doc_flag == FALSE)
+		init_files(argc, argv, &pipex);
+	else
+		init_files_heredoc(argc, argv, &pipex);
 	status = my_pipex(argv, envp, &pipex);
 	return (WEXITSTATUS(status));
 }

@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:11 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/27 01:15:32 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 02:19:26 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	execute_command(char *command, char *envp[], t_pipex *pipex)
 	{
 		clean(pipex);
 		my_free2d((void **)tokenized_cmd);
-		my_free((void**)&path_cmd);
+		my_free((void **)&path_cmd);
 		exit(ERR_CMD_NOT_FOUND);
 	}
 	my_free2d((void **)tokenized_cmd);
-	my_free((void**)&path_cmd);
+	my_free((void **)&path_cmd);
 }
 
 pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
