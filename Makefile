@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/25 23:37:02 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/27 01:36:17 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,6 +96,7 @@ all: libft $(NAME)
 
 # Rule to create the program
 $(NAME): $(OBJS) $(LIBFT)
+	@if [ -f $(BUILD_MODE_FILE) ]; then $(MAKE) clean $(OBJS) $(LIBFT) -s; fi
 	@rm -f $(BONUS_NAME)
 	@$(CC) $(CFLAGS) $(IFLAGS) $^ $(LDFLAGS) -o $(NAME)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Compilation success\t✅$(NC)\n"
@@ -160,24 +161,22 @@ norm:
 	@norminette $(SRC_DIR) $(INC_DIR)
 
 # Rule to compile object files from source files with debug flags
-debug:
+debug: $(BUILD_MODE_FILE)
 	@if [ ! -f $(BUILD_MODE_FILE) ] || ! grep -q "DEBUG=1" $(BUILD_MODE_FILE); then \
 		$(MAKE) clean -s; \
 	fi
 	@echo "DEBUG=1" > $(BUILD_MODE_FILE)
-	@$(MAKE) bonus -s DEBUG=1
-	@$(MAKE) -s DEBUG=1
+	@$(MAKE) bonus DEBUG=1 -s
 	@echo " -> $(BW)[Debug]:\t\t$(BB)Debug mode enabled\t🟦$(NC)"
 	-@if [ ! -z "$(ARGS)" ]; then ./$(NAME) $(ARGS); fi
 
 # Rule to compile with valgrind debug flags
-valgrind:
+valgrind: $(BUILD_MODE_FILE)
 	@if [ ! -f $(BUILD_MODE_FILE) ] || ! grep -q "VALGRIND=1" $(BUILD_MODE_FILE); then \
 		$(MAKE) clean -s; \
 	fi
 	@echo "VALGRIND=1" > $(BUILD_MODE_FILE)
-	@$(MAKE) bonus -s VALGRIND=1
-	@$(MAKE) -s VALGRIND=1
+	@$(MAKE) bonus VALGRIND=1 -s
 	@echo " -> $(BW)[Valgrind]:\t\t$(BB)Valgrind mode enabled\t🟦$(NC)"
 	-@if [ ! -z "$(ARGS)" ]; then \
 		valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes \
