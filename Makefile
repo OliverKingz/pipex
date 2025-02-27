@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/27 02:03:15 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/27 02:12:54 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,7 +96,7 @@ all: libft $(NAME)
 
 # Rule to create the program
 $(NAME): $(OBJS) $(LIBFT)
-	@if [ -f $(BUILD_MODE_FILE) ]; then $(MAKE) clean $(OBJS) $(LIBFT) -s; fi
+	@if [ -f $(BUILD_MODE_FILE) ]; then $(MAKE) fclean $(OBJS) $(LIBFT) -s; fi
 	@rm -f $(BONUS_NAME)
 	@$(CC) $(CFLAGS) $(IFLAGS) $^ $(LDFLAGS) -o $(NAME)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Compilation success\t✅$(NC)\n"

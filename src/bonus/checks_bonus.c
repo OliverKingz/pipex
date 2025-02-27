@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:15 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/27 01:16:14 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 02:08:36 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,11 @@ void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 		pipex->in_fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (pipex->in_fd == -1)
 			(clean(pipex), my_perr(HERE_DOC_FILE, false));
+		write_here_doc(argv[2], pipex);
+		close(pipex->in_fd);
 		pipex->in_fd = open(HERE_DOC_FILE, O_RDONLY);
 		if (pipex->in_fd == -1)
 			(clean(pipex), my_perr(HERE_DOC_FILE, false));
-		write_here_doc(argv[2], pipex);
 		pipex->out_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (pipex->out_fd == -1)
 			(my_perr(argv[argc - 1], false));
