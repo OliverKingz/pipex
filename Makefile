@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/27 02:12:54 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/27 03:18:59 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,7 +96,6 @@ all: libft $(NAME)
 
 # Rule to create the program
 $(NAME): $(OBJS) $(LIBFT)
-	@if [ -f $(BUILD_MODE_FILE) ]; then $(MAKE) fclean $(OBJS) $(LIBFT) -s; fi
 	@rm -f $(BONUS_NAME)
 	@$(CC) $(CFLAGS) $(IFLAGS) $^ $(LDFLAGS) -o $(NAME)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t\t$(BG)Compilation success\t✅$(NC)\n"
@@ -154,85 +153,15 @@ $(OBJ_BONUS_DIR)%.o: $(SRC_BONUS_DIR)%.c | $(OBJ_BONUS_DIR)
 	@$(CC) $(CFLAGS) $(IFLAGS_BONUS) -c $< -o $@
 
 # **************************************************************************** #
-# NORM AND DEBUG RULES
+# NORM 
 
 # Rule to check if the files pass norminette
 norm:
 	@norminette $(SRC_DIR) $(INC_DIR)
 
-# Rule to compile object files from source files with debug flags
-debug:
-	@if [ ! -f $(BUILD_MODE_FILE) ] || ! grep -q "DEBUG=1" $(BUILD_MODE_FILE); then \
-		$(MAKE) fclean -s; \
-	fi
-	@echo "DEBUG=1" > $(BUILD_MODE_FILE)
-	@$(MAKE) bonus DEBUG=1 -s
-	@echo " -> $(BW)[Debug]:\t\t$(BB)Debug mode enabled\t🟦$(NC)"
-	-@if [ ! -z "$(ARGS)" ]; then ./$(NAME) $(ARGS); fi
+# valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --track-fds=yes ./$(NAME) $(ARGS);
 
-# Rule to compile with valgrind debug flags
-valgrind:
-	@if [ ! -f $(BUILD_MODE_FILE) ] || ! grep -q "VALGRIND=1" $(BUILD_MODE_FILE); then \
-		$(MAKE) fclean -s; \
-	fi
-	@echo "VALGRIND=1" > $(BUILD_MODE_FILE)
-	@$(MAKE) bonus VALGRIND=1 -s
-	@echo " -> $(BW)[Valgrind]:\t\t$(BB)Valgrind mode enabled\t🟦$(NC)"
-	-@if [ ! -z "$(ARGS)" ]; then \
-		valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes \
-		--trace-children=yes --track-fds=yes \
-		./$(NAME) $(ARGS); \
-	fi
-
-# **************************************************************************** #
-# ADDITIONAL RULES
-
-# Rule to show compilation and linking commands
-show:
-	@echo "$(BY)Compilation command:$(NC)\t"\
-		"$(CC) $(CFLAGS) $(IFLAGS) -c $(SRC_DIR)$(NAME).c -o $(OBJ_DIR)$(NAME).o"
-	@echo "$(BY)Linking command:$(NC)\t"\
-		"$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)"
-	@echo "$(BY)Cleaning command:$(NC)\t rm -rf $(NAME) $(BONUS_NAME)"\
-		"$(OBJ_DIR)*.o $(OBJ_DIR)*.d $(OBJ_DIR) $(BUILD_MODE_FILE)"
-
-# Rule to show all variables being used
-info:
-	@echo "$(BY)\nozamora's Project:$(NC)"
-	@echo "$(BB)NAME: $(NC)$(NAME)"
-	@echo "$(BB)LIBFT: $(NC)$(LIBFT)"
-	@echo "$(BB)BONUS_NAME: $(NC)$(BONUS_NAME)"
-	@echo "$(BY)\nCompiler:$(NC)"
-	@echo "$(BB)CC: $(NC)$(CC)"
-	@echo "$(BB)CFLAGS: $(NC)$(CFLAGS)"
-	@echo "$(BB)IFLAGS: $(NC)$(IFLAGS)"
-	@echo "$(BB)LDFLAGS: $(NC)$(LDFLAGS)"
-	@echo "$(BY)\nDirectories:$(NC)"
-	@echo "$(BB)SRC_DIR: $(NC)$(SRC_DIR)"
-	@echo "$(BB)INC_DIR: $(NC)$(INC_DIR)"
-	@echo "$(BB)OBJ_DIR: $(NC)$(OBJ_DIR)"
-	@echo "$(BB)LIB_DIR: $(NC)$(LIB_DIR)"
-	@echo "$(BB)LIBFT_DIR: $(NC)$(LIBFT_DIR)"
-	@echo "$(BB)LIBFT_INC_DIR: $(NC)$(LIBFT_INC_DIR)"
-	@echo "$(BY)\nFiles:$(NC)"
-	@echo "$(BB)NAME: $(NC)$(NAME)"
-	@echo "$(BB)SRC_FILES: $(NC)$(SRC_FILES)"
-	@echo "$(BB)INC_FILES: $(NC)$(INC_FILES)"
-	@echo "$(BB)SRCS: $(NC)$(SRCS)"
-	@echo "$(BB)OBJS: $(NC)$(OBJS)"
-	@echo "$(BB)DEPS: $(NC)$(DEPS)"
-	@echo "$(BB)INCS: $(NC)$(INCS)"
-	@echo "$(BY)\nBonus:$(NC)"
-	@echo "$(BB)BONUS_NAME: $(NC)$(BONUS_NAME)"
-	@echo "$(BB)SRC_BONUS_FILES: $(NC)$(SRC_BONUS_FILES)"
-	@echo "$(BB)INC_BONUS_FILES: $(NC)$(INC_BONUS_FILES)"
-	@echo "$(BB)SRCS_BONUS: $(NC)$(SRCS_BONUS)"
-	@echo "$(BB)OBJS_BONUS: $(NC)$(OBJS_BONUS)"
-	@echo "$(BB)DEPS_BONUS: $(NC)$(DEPS_BONUS)"
-	@echo "$(BB)INCS_BONUS: $(NC)$(INCS_BONUS)"
-	@echo "$(BB)IFLAGS_BONUS: $(NC)$(IFLAGS_BONUS)"
-
-.PHONY: all clean fclean re bonus norm debug valgrind show info
+.PHONY: all clean fclean re bonus norm
 .DEFAULT_GOAL := all
 
 # **************************************************************************** #
