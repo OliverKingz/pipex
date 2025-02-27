@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:38:38 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/26 00:32:43 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 00:34:35 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_pipex
 	int		prev_pipe_fd;
 	int		num_cmds;
 	pid_t	*pid;
-	int		here_doc;
+	int		here_doc_flag;
 }			t_pipex;
 
 /* ************************************************************************** */
@@ -43,6 +43,8 @@ typedef struct s_pipex
 
 # define STDIN_FILENO 0
 # define STDOUT_FILENO 1
+
+# define HERE_DOC_FILE ".here_doc_tmp"
 
 # define ERR_MSG_SYNTAX "syntax error\n"
 # define ERR_MSG_CMD_NOT_FOUND ": command not found\n"
@@ -55,7 +57,7 @@ typedef struct s_pipex
 
 int			main(int argc, char *argv[], char *envp[]);
 int			my_pipex(char *argv[], char *envp[], t_pipex *pipex);
-void		here_doc(char *limiter, t_pipex *pipex);
+void		write_here_doc(char *limiter, t_pipex *pipex);
 
 void		init_struct(int argc, char *argv[], t_pipex *pipex);
 void		init_pipes(t_pipex *pipex);
@@ -73,7 +75,7 @@ char		*my_addpath_cmd(char *command, char *path, t_pipex *pipex);
 
 void		my_perr(const char *msg, bool should_exit);
 void		my_free2d(void **array2d);
-void		my_free(void *allocatedMemory);
+void		my_free(void **allocatedMemory);
 void		close_fds(t_pipex *pipex);
 void		clean(t_pipex *pipex);
 

@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:47:57 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/26 00:33:15 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 00:38:11 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ void	my_free2d(void **array2d)
 	i = 0;
 	while (array2d[i] != NULL)
 	{
-		my_free(array2d[i]);
+		my_free((void**)&array2d[i]);
 		i++;
 	}
-	my_free(array2d);
+	my_free((void**)&array2d);
 }
 
-void	my_free(void *allocatedMemory)
+void	my_free(void **allocatedMemory)
 {
-	if (allocatedMemory != NULL)
+	if (*allocatedMemory != NULL)
 	{
-		free(allocatedMemory);
-		allocatedMemory = NULL;
+		free(*allocatedMemory);
+		*allocatedMemory = NULL;
 	}
 }
 
@@ -59,7 +59,7 @@ void	clean(t_pipex *pipex)
 {
 	close_fds(pipex);
 	if (pipex->pid)
-		my_free(pipex->pid);
-	if (pipex->here_doc == TRUE)
-		unlink("here_doc");
+		my_free((void**)&pipex->pid);
+	if (pipex->here_doc_flag == TRUE)
+		unlink(HERE_DOC_FILE);
 }

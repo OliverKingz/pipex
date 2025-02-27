@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:15 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/26 01:22:36 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 01:16:14 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	check_args(int argc, char *argv[])
 
 void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 {
-	if (pipex->here_doc == FALSE)
+	if (pipex->here_doc_flag == FALSE)
 	{
 		pipex->in_fd = open(argv[1], O_RDONLY);
 		if (pipex->in_fd == -1 || access(argv[1], F_OK | R_OK) == -1)
@@ -44,20 +44,20 @@ void	check_open_files(int argc, char *argv[], t_pipex *pipex)
 		}
 		pipex->out_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (pipex->out_fd == -1)
-			(clean(pipex), my_perr(argv[argc - 1], false));
+			(my_perr(argv[argc - 1], false));
 	}
 	else
 	{
-		pipex->in_fd = open("here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		pipex->in_fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (pipex->in_fd == -1)
-			(clean(pipex), my_perr("here_doc", false));
-		pipex->in_fd = open("here_doc", O_RDONLY);
+			(clean(pipex), my_perr(HERE_DOC_FILE, false));
+		pipex->in_fd = open(HERE_DOC_FILE, O_RDONLY);
 		if (pipex->in_fd == -1)
-			(clean(pipex), my_perr("here_doc", false));
+			(clean(pipex), my_perr(HERE_DOC_FILE, false));
+		write_here_doc(argv[2], pipex);
 		pipex->out_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (pipex->out_fd == -1)
-			(clean(pipex), my_perr(argv[argc - 1], false));
-		here_doc(argv[2], pipex);
+			(my_perr(argv[argc - 1], false));
 	}
 }
 
@@ -85,9 +85,9 @@ char	*check_addpath_cmd(char *command, char *envp[], t_pipex *pipex)
 	{
 		ft_putstr_fd(command, 2);
 		ft_putstr_fd(ERR_MSG_CMD_NOT_FOUND, 2);
-		return (my_free(path), NULL);
+		return (my_free((void**)&path), NULL);
 	}
-	return (my_free(path), path_cmd);
+	return (my_free((void**)&path), path_cmd);
 }
 
 char	*my_addpath_cmd(char *command, char *path, t_pipex *pipex)
@@ -108,7 +108,7 @@ char	*my_addpath_cmd(char *command, char *path, t_pipex *pipex)
 			break ;
 		else
 		{
-			my_free(path_cmd);
+			my_free((void**)&path_cmd);
 			path_dir = ft_strtok(NULL, ":");
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 02:55:11 by ozamora-          #+#    #+#             */
-/*   Updated: 2025/02/26 01:24:49 by ozamora-         ###   ########.fr       */
+/*   Updated: 2025/02/27 01:15:32 by ozamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	execute_command(char *command, char *envp[], t_pipex *pipex)
 	{
 		clean(pipex);
 		my_free2d((void **)tokenized_cmd);
-		my_free(path_cmd);
+		my_free((void**)&path_cmd);
 		exit(ERR_CMD_NOT_FOUND);
 	}
 	my_free2d((void **)tokenized_cmd);
-	my_free(path_cmd);
+	my_free((void**)&path_cmd);
 }
 
 pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
@@ -49,11 +49,11 @@ pid_t	first_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 	{
 		close(pipex->pipe_fd[0]);
 		if (dup2(pipex->in_fd, STDIN_FILENO) == -1)
-			(clean(pipex), my_perr("dup2", true));
+			(clean(pipex), my_perr("dup2 1", true));
 		if (dup2(pipex->pipe_fd[1], STDOUT_FILENO) == -1)
-			(clean(pipex), my_perr("dup2", true));
+			(clean(pipex), my_perr("dup2 2", true));
 		(close(pipex->in_fd), close(pipex->pipe_fd[1]));
-		execute_command(argv[i + 2], envp, pipex);
+		execute_command(argv[i + 2 + pipex->here_doc_flag], envp, pipex);
 	}
 	close(pipex->pipe_fd[1]);
 	pipex->prev_pipe_fd = pipex->pipe_fd[0];
@@ -80,7 +80,7 @@ pid_t	last_execution(int i, char *argv[], char *envp[], t_pipex *pipex)
 		}
 		(close(pipex->out_fd), close(pipex->prev_pipe_fd));
 		close_fds(pipex);
-		execute_command(argv[i + 2 + pipex->here_doc], envp, pipex);
+		execute_command(argv[i + 2 + pipex->here_doc_flag], envp, pipex);
 	}
 	close(pipex->prev_pipe_fd);
 	return (pid);
@@ -104,7 +104,7 @@ pid_t	middle_execution(int i, char **argv, char *envp[], t_pipex *pipex)
 			(clean(pipex), my_perr("dup2", true));
 		close(pipex->prev_pipe_fd);
 		close(pipex->pipe_fd[1]);
-		execute_command(argv[i + 2 + pipex->here_doc], envp, pipex);
+		execute_command(argv[i + 2 + pipex->here_doc_flag], envp, pipex);
 	}
 	close(pipex->prev_pipe_fd);
 	close(pipex->pipe_fd[1]);
