@@ -6,7 +6,7 @@
 #    By: ozamora- <ozamora-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 23:23:38 by ozamora-          #+#    #+#              #
-#    Updated: 2025/02/27 01:36:17 by ozamora-         ###   ########.fr        #
+#    Updated: 2025/02/27 02:03:15 by ozamora-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -161,9 +161,9 @@ norm:
 	@norminette $(SRC_DIR) $(INC_DIR)
 
 # Rule to compile object files from source files with debug flags
-debug: $(BUILD_MODE_FILE)
+debug:
 	@if [ ! -f $(BUILD_MODE_FILE) ] || ! grep -q "DEBUG=1" $(BUILD_MODE_FILE); then \
-		$(MAKE) clean -s; \
+		$(MAKE) fclean -s; \
 	fi
 	@echo "DEBUG=1" > $(BUILD_MODE_FILE)
 	@$(MAKE) bonus DEBUG=1 -s
@@ -171,9 +171,9 @@ debug: $(BUILD_MODE_FILE)
 	-@if [ ! -z "$(ARGS)" ]; then ./$(NAME) $(ARGS); fi
 
 # Rule to compile with valgrind debug flags
-valgrind: $(BUILD_MODE_FILE)
+valgrind:
 	@if [ ! -f $(BUILD_MODE_FILE) ] || ! grep -q "VALGRIND=1" $(BUILD_MODE_FILE); then \
-		$(MAKE) clean -s; \
+		$(MAKE) fclean -s; \
 	fi
 	@echo "VALGRIND=1" > $(BUILD_MODE_FILE)
 	@$(MAKE) bonus VALGRIND=1 -s
