@@ -86,9 +86,6 @@ The following functions are authorized for use in the `pipex` project. Each func
 - **`exit()`**: Terminates the program with a specified status code. Used to handle errors or normal termination.
 - **`access()`**: Checks if a file exists or if the program has permission to access it. Useful for error handling.
 
-### 8. **Custom Functions**
-- **`ft_printf()`**: A custom implementation of `printf` (if you have coded one). Used for formatted output.
-
 ## How It Works  
 The program takes four arguments: two file names and two shell commands. It executes the commands in a pipeline, redirecting the input and output as specified.
 
@@ -100,6 +97,16 @@ This behaves the same as the following shell command:
 ```bash
 < infile ls -l | wc -l > outfile
 ```
+
+### Recommendations for Testing
+1. **`time`**: Use `time` to measure the execution time of commands, especially when using `sleep`. This helps verify if commands are executed concurrently.
+2. **`env`**: Use `env` to check if the environment variables (e.g., `PATH`) are correctly passed to the commands.
+3. **`env -i`**: Use `env -i` to test how your program handles commands without environment variables.
+4. **`echo $?`**: Use `echo $?` to capture and verify the exit status of commands.
+6. **`which ls`**: Use `which` command to search the path of the commands, and to use absolute commands in our pipex. 
+7. **`cp /usr/bin/ls .`**: use this command to copy an original command to our current directory, to test relative paths in our pipex.
+8. **`unset PATH` or `export PATH=""`**: use one of these commands to test our pipex behaviour without PATH
+5. **`valgrind --trace-children=yes --track-fds=yes`**: Use these flags to track if your are managing the children processes and fds correctly
 
 ---
 
@@ -117,7 +124,6 @@ This behaves the same as the following shell command:
 | `./pipex infile "sleep 3" "ls" outfile`                | `< infile sleep 3 \| ls > outfile`            | Waits for 3 seconds and lists files in the current directory.                   | Output of `ls` written to `outfile`.                                               |
 | `./pipex infile "grep ep" "wc -w" outfile`             | `< infile grep ep \| wc -w > outfile`         | Searches for lines containing "ep" in `infile` and counts words.                | Number of words in lines containing "a1" written to `outfile`.                     |
 | `./pipex infile "sort" "uniq" outfile`                 | `< infile sort \| uniq > outfile`             | Sorts the content of `infile` and removes duplicate lines.                      | Sorted and deduplicated content written to `outfile`.                              |
-| `./pipex infile "awk '{print $1}'" "wc -l" outfile`    | `< infile awk '{print $1}' \| wc -l > outfile`| Extracts the first column from `infile` and counts lines.                       | Number of lines in the first column written to `outfile`.                          |
 | `./pipex infile "head -n 5" "tail -n 1" outfile`       | `< infile head -n 5 \| tail -n 1 > outfile`   | Extracts the first 5 lines of `infile` and then the last line of those 5.       | The 5th line of `infile` written to `outfile`.                                     |
 | `./pipex infile "tr ' ' '\n'" "sort" outfile`          | `< infile tr ' ' '\n' \| sort > outfile`      | Splits words in `infile` by spaces and sorts them.                              | Sorted list of words written to `outfile`.                                         |
 | `./pipex infile "grep pattern" "wc -l" outfile`        | `< infile grep pattern \| wc -l > outfile`    | Searches for "pattern" in `infile` and counts matching lines.                   | Number of lines containing "pattern" written to `outfile`.                         |
@@ -194,3 +200,4 @@ For bonus features, use the bonus rule in the Makefile:
 
 ## Acknowledgments  
 This project is part of the **42 Cursus**, a rigorous programming curriculum that emphasizes hands-on learning and problem-solving. Special thanks to the 42 team for providing this challenging and rewarding project!  
+
