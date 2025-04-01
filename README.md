@@ -2,10 +2,10 @@
 
 <div align="right">
 
-  [![GitHub stars](https://img.shields.io/github/stars/OliveKingz/pipex?color=brightgreen)]()
-  [![Visits Badge](https://badges.pufler.dev/visits/OliveKingz/pipex)]()
-  [![Created Badge](https://badges.pufler.dev/created/OliveKingz/pipex)]()
-  [![Updated Badge](https://badges.pufler.dev/updated/OliveKingz/pipex)]()
+  [![GitHub stars](https://img.shields.io/github/stars/OliverKingz/pipex?color=brightgreen)]()
+  [![Visits Badge](https://badges.pufler.dev/visits/OliverKingz/pipex)]()
+  [![Created Badge](https://badges.pufler.dev/created/OliverKingz/pipex)]()
+  [![Updated Badge](https://badges.pufler.dev/updated/OliverKingz/pipex)]()
 
 </div>
 
@@ -24,7 +24,7 @@ Keywords
 
 <div align="right">
 
-Made by: [![Contributors Display](https://badges.pufler.dev/contributors/OliveKingz/pipex?size=30&padding=5&perRow=10&bots=true)](https://github.com/OliverKingz)
+Made by: [![Contributors Display](https://badges.pufler.dev/contributors/OliverKingz/pipex?size=30&padding=5&perRow=10&bots=true)](https://github.com/OliverKingz)
 
 </div>
 
