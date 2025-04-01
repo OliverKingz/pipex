@@ -1,4 +1,14 @@
-# Pipex  
+# Pipex
+
+<div align="right">
+
+  [![GitHub stars](https://img.shields.io/github/stars/OliveKingz/pipex?color=brightgreen)]()
+  [![Visits Badge](https://badges.pufler.dev/visits/OliveKingz/pipex)]()
+  [![Created Badge](https://badges.pufler.dev/created/OliveKingz/pipex)]()
+  [![Updated Badge](https://badges.pufler.dev/updated/OliveKingz/pipex)]()
+
+</div>
+
 [42 Cursus] A C program that mimics the behavior of shell pipes (`|`), allowing you to execute commands in a pipeline with input and output redirection.  
 This project was designed to enhance skills in **process management**, **file handling**, and **C programming**.
 
@@ -11,6 +21,12 @@ Keywords
 - **Shell Commands**
 - **Forking**
 - **System Calls**
+
+<div align="right">
+
+Made by: [![Contributors Display](https://badges.pufler.dev/contributors/OliveKingz/pipex?size=30&padding=5&perRow=10&bots=true)](https://github.com/OliverKingz)
+
+</div>
 
 ---
 
