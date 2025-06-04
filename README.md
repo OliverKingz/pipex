@@ -211,11 +211,15 @@ This behaves the same as the following shell command:
    git clone https://github.com/yourusername/pipex.git
    cd pipex
    ```
-2. Compile the project using the provided **Makefile**:
+2. Initialize and update the libraries as submodules:
+   ```bash
+   git submodule update --init --recursive
+   ```
+3. Compile the project using the provided **Makefile**:
    ```bash
    make
    ```
-3. Run the program with the required arguments:
+4. Run the program with the required arguments:
    ```bash
    ./pipex infile "cmd1" "cmd2" outfile
    ```
